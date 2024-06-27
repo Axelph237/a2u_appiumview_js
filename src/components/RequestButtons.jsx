@@ -1,6 +1,8 @@
 import axios from 'axios';
-import './Requestbuttons.css'
+import './RequestButtons.css'
 import {useState} from "react";
+import Lottie from 'react-lottie';
+import loadingAnim from "../assets/lottie/square-loading.json"
 
 export default function RequestButtons() {
     const [loading, setLoading] = useState(false);
@@ -43,11 +45,44 @@ export default function RequestButtons() {
             });
     };
 
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: loadingAnim,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYMid slice"
+        }
+    };
+
     return (
         <div className='button-container'>
-            <div className='post-button' onClick={startAppiumServer}>Start Appium Server</div>
-            <div className='post-button' onClick={stopAppiumServer}>Stop Appium Server</div>
-            <div className='post-button' onClick={runAppiumTest}>Run Appium Test</div>
+            <div className='post-button layered' onClick={startAppiumServer}>
+                <p>Start Appium Server</p>
+                <Lottie
+                    options={defaultOptions}
+                    height={75}
+                    width={75}
+                    style={{position: "relative", left: "125px"}}
+                />
+            </div>
+            <div className='post-button layered' onClick={stopAppiumServer}>
+                <p>Stop Appium Server</p>
+                <Lottie
+                    options={defaultOptions}
+                    height={75}
+                    width={75}
+                    style={{position: "relative", left: "125px"}}
+                />
+            </div>
+            <div className='post-button layered' onClick={runAppiumTest}>
+                <p>Run Appium Test</p>
+                <Lottie
+                    options={defaultOptions}
+                    height={75}
+                    width={75}
+                    style={{position: "relative", left: "125px"}}
+                />
+            </div>
         </div>
     );
 }

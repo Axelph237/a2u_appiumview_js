@@ -23,6 +23,15 @@
   align-items: center;
 }
 
+.layered {
+  display: grid;
+
+  > * {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
 .page-row {
   display: flex;
   flex-direction: row;
