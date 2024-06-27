@@ -50,7 +50,6 @@ export default function RequestButtons() {
 
     return (
         <>
-            <h1>Control Appium from Web App</h1>
             <div style={quickStyling} onClick={startAppiumServer}>Start Appium Server</div>
             <div style={quickStyling} onClick={stopAppiumServer}>Stop Appium Server</div>
             <div style={quickStyling} onClick={runAppiumTest}>Run Appium Test</div>
