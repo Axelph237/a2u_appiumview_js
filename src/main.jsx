@@ -2,10 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import TestButton from "./components/TestButton.jsx";
+import RequestButtons from "./components/RequestButtons.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <TestButton />
+        <RequestButtons />
     </React.StrictMode>,
 )

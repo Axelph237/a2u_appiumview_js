@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default function TestButton() {
+export default function RequestButtons() {
     const quickStyling = {
         width: 200,
         height: 100,
@@ -12,18 +12,24 @@ export default function TestButton() {
         margin: '10px',
     }
 
+    const httpMole = axios.create({
+        baseURL: 'http://localhost:8000/appium/',
+        timeout: 5000
+    })
+
     const startAppiumServer = () => {
-        axios.post('http://localhost:8000/appium/start_appium/')
+        httpMole.post('start_appium/')
             .then(response => {
-                console.log('Appium server started:', response.data);
-            })
+            console.log('Appium server started:', response.data);
+        })
             .catch(error => {
                 console.error('Error starting Appium server:', error);
             });
+
     };
 
     const stopAppiumServer = () => {
-        axios.post('http://localhost:8000/appium/stop_appium/')
+        httpMole.post('stop_appium/')
             .then(response => {
                 console.log('Appium server stopped:', response.data);
             })
@@ -33,7 +39,7 @@ export default function TestButton() {
     };
 
     const runAppiumTest = () => {
-        axios.post('http://localhost:8000/appium/run_appium_test/')
+        httpMole.post('run_appium_test/')
             .then(response => {
                 console.log('Appium test started:', response.data);
             })
