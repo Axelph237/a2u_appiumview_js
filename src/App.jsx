@@ -1,24 +1,17 @@
 import './App.css'
 import DraggableComponent from "./components/DraggableComponent.jsx";
-import {useState, useEffect} from "react";
+import RequestButtons from "./components/RequestButtons.jsx";
 
 function App() {
+    const defaultURL = "localhost:4723/"
 
-    const button = (
-        <div className="runButton">
-            <p>{buttonText}</p>
-        </div>
-    )
 
     return (
         <>
-            <div className="buttonContainer">
-                {button}
-            </div>
+            <RequestButtons />
 
             <DraggableComponent className="appiumBox">
-                <input type="text" id="appiumBoxInput" placeholder={defaultURL} onChange={getInputURL}></input>
-                <iframe className="appiumFrame" src={"http://" + inputURL}></iframe>
+                <iframe className="appiumFrame" src={"http://" + defaultURL}></iframe>
             </DraggableComponent>
         </>
     )
