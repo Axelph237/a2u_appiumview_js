@@ -8,18 +8,19 @@ function App() {
 
     return (
         <>
-            <div className='page-row'>
-                <div className='page-column' id='text-column' style={{alignItems: 'center', padding: '50px'}}>
-                    <h1>Control Appium from Web App</h1>
+            <div className='page-row' style={{width: '100vw'}}>
+                <div id='sidebar'>
+                    <p>Control Appium from Web App</p>
                 </div>
-                <div className='page-column' id='interact-column' style={{width: '50vw',alignItems: 'center', padding: '50px'}}>
-                    <RequestButtons/>
 
-                    <DraggableComponent className="appiumBox">
-                        <iframe className="appiumFrame" src={"http://" + defaultURL}></iframe>
-                    </DraggableComponent>
+                <div id='interact-column'>
+                    <RequestButtons/>
                 </div>
             </div>
+
+            <DraggableComponent className="appiumBox">
+                <iframe className="appiumFrame" src={"http://" + defaultURL}></iframe>
+            </DraggableComponent>
         </>
     )
 }

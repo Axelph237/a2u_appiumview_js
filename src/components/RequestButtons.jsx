@@ -1,7 +1,11 @@
 import axios from 'axios';
 import './Requestbuttons.css'
+import {useState} from "react";
 
 export default function RequestButtons() {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     const httpMole = axios.create({
         baseURL: 'http://localhost:8000/appium/',
