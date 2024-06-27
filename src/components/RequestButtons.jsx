@@ -1,16 +1,7 @@
 import axios from 'axios';
+import './Requestbuttons.css'
 
 export default function RequestButtons() {
-    const quickStyling = {
-        width: 200,
-        height: 100,
-        cursor: 'pointer',
-        background: 'red',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: '10px',
-    }
 
     const httpMole = axios.create({
         baseURL: 'http://localhost:8000/appium/',
@@ -50,9 +41,9 @@ export default function RequestButtons() {
 
     return (
         <>
-            <div style={quickStyling} onClick={startAppiumServer}>Start Appium Server</div>
-            <div style={quickStyling} onClick={stopAppiumServer}>Stop Appium Server</div>
-            <div style={quickStyling} onClick={runAppiumTest}>Run Appium Test</div>
+            <div className='post-button' onClick={startAppiumServer}>Start Appium Server</div>
+            <div className='post-button' onClick={stopAppiumServer}>Stop Appium Server</div>
+            <div className='post-button' onClick={runAppiumTest}>Run Appium Test</div>
         </>
     );
 }
