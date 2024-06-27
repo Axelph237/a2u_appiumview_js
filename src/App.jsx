@@ -1,6 +1,6 @@
 import './App.css'
 import DraggableComponent from "./components/DraggableComponent.jsx";
-import RequestButtons from "./components/RequestButtons.jsx";
+import RequestManager from "./components/RequestManager.jsx";
 import a2uLogo from "./assets/a2u-logo-white-nobg.png"
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
                 </div>
 
                 <div id='interact-column'>
-                    <RequestButtons/>
+                    <RequestManager/>
                 </div>
             </div>
 

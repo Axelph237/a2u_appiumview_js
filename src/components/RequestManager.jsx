@@ -3,8 +3,9 @@ import './RequestButtons.css'
 import {useState} from "react";
 import Lottie from 'react-lottie';
 import loadingAnim from "../assets/lottie/square-loading.json"
+import PropTypes from "prop-types";
 
-export default function RequestButtons() {
+export default function RequestManager() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
@@ -45,6 +46,17 @@ export default function RequestButtons() {
             });
     };
 
+    return (
+        <div className='button-container'>
+            <RequestButton action={startAppiumServer} text='Start Appium' />
+            <RequestButton action={stopAppiumServer} text='Stop Appium' />
+            <RequestButton action={runAppiumTest} text='Run Appium Test' />
+        </div>
+    );
+}
+
+function RequestButton({text, action}) {
+
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -55,34 +67,18 @@ export default function RequestButtons() {
     };
 
     return (
-        <div className='button-container'>
-            <div className='post-button layered' onClick={startAppiumServer}>
-                <p>Start Appium Server</p>
-                <Lottie
-                    options={defaultOptions}
-                    height={75}
-                    width={75}
-                    style={{position: "relative", left: "125px"}}
-                />
-            </div>
-            <div className='post-button layered' onClick={stopAppiumServer}>
-                <p>Stop Appium Server</p>
-                <Lottie
-                    options={defaultOptions}
-                    height={75}
-                    width={75}
-                    style={{position: "relative", left: "125px"}}
-                />
-            </div>
-            <div className='post-button layered' onClick={runAppiumTest}>
-                <p>Run Appium Test</p>
-                <Lottie
-                    options={defaultOptions}
-                    height={75}
-                    width={75}
-                    style={{position: "relative", left: "125px"}}
-                />
-            </div>
+        <div className='post-button layered' onClick={action}>
+            <p>{text}</p>
+            <Lottie
+                options={defaultOptions}
+                height={75}
+                width={75}
+                style={{position: "relative", left: "125px"}}
+            />
         </div>
-    );
+    )
+}
+RequestManager.propTypes = {
+    text: PropTypes.string,
+    action: PropTypes.func,
 }
