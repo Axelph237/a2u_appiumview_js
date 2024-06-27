@@ -1,6 +1,7 @@
 import './App.css'
 import DraggableComponent from "./components/DraggableComponent.jsx";
 import RequestButtons from "./components/RequestButtons.jsx";
+import a2uLogo from "./assets/a2u-logo-white-nobg.png"
 
 function App() {
     const defaultURL = "localhost:4723/"
@@ -10,7 +11,8 @@ function App() {
         <>
             <div className='page-row' style={{width: '100vw'}}>
                 <div id='sidebar'>
-                    <p>Control Appium from Web App</p>
+                    <img src={a2uLogo} alt='a2uLogo' width='100'/>
+                    <h1 style={{fontSize: '25px'}}>A2U Agent Checker</h1>
                 </div>
 
                 <div id='interact-column'>
