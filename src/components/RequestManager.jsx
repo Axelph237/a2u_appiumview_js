@@ -78,7 +78,7 @@ function RequestButton({text, action}) {
         </div>
     )
 }
-RequestManager.propTypes = {
-    text: PropTypes.string,
-    action: PropTypes.func,
+RequestButton.propTypes = {
+    text: PropTypes.string.isRequired,
+    action: PropTypes.func.isRequired,
 }
