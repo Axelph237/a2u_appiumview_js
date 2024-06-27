@@ -1,8 +1,17 @@
+.component-container {
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .appiumBox {
   display: flex;
   flex-direction: column;
-  justifyContent: center;
-  alignItems: center;
+  justify-content: center;
+  align-items: center;
 
   background: #000000;
   color: #FFFFFF;

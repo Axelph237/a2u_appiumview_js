@@ -40,10 +40,10 @@ export default function RequestButtons() {
     };
 
     return (
-        <>
+        <div className='button-container'>
             <div className='post-button' onClick={startAppiumServer}>Start Appium Server</div>
             <div className='post-button' onClick={stopAppiumServer}>Stop Appium Server</div>
             <div className='post-button' onClick={runAppiumTest}>Run Appium Test</div>
-        </>
+        </div>
     );
 }

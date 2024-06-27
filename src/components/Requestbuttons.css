@@ -1,5 +1,12 @@
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .post-button {
-    width: 200px;
+    width: 350px;
     height: 100px;
 
     display: flex;
@@ -7,9 +14,14 @@
     align-items: center;
 
     margin: 10px;
-    background: var(--a2u-blue);
+    background: var(--light-blue);
+    border-radius: 15px;
 
     cursor: pointer;
 
     color: white;
 }
+
+.post-button:hover {
+    background: var(--a2u-blue);
+ }
