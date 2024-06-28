@@ -12,18 +12,18 @@ export default function RequestManager() {
 
     const httpMole = axios.create({
         baseURL: 'http://localhost:8000/appium/',
-        timeout: 5000
+        timeout: 50000
     })
 
     const startAppiumServer = () => {
         httpMole.post('start_appium/')
-            .then(response => {
+            .then(async response => {
             console.log('Appium server started:', response.data);
+
         })
             .catch(error => {
                 console.error('Error starting Appium server:', error);
             });
-
     };
 
     const stopAppiumServer = () => {
@@ -48,14 +48,14 @@ export default function RequestManager() {
 
     return (
         <div className='button-container'>
-            <RequestButton action={startAppiumServer} text='Start Appium' />
-            <RequestButton action={stopAppiumServer} text='Stop Appium' />
-            <RequestButton action={runAppiumTest} text='Run Appium Test' />
+            <RequestButton action={startAppiumServer} text='Start Appium' loading={loading}/>
+            <RequestButton action={stopAppiumServer} text='Stop Appium' loading={loading}/>
+            <RequestButton action={runAppiumTest} text='Run Appium Test' loading={loading}/>
         </div>
     );
 }
 
-function RequestButton({text, action}) {
+function RequestButton({text, action, loading}) {
 
     const defaultOptions = {
         loop: true,
@@ -73,7 +73,7 @@ function RequestButton({text, action}) {
                 options={defaultOptions}
                 height={75}
                 width={75}
-                style={{position: "relative", left: "125px"}}
+                style={{position: "relative", left: "125px", visibility: loading ? 'visible' : 'hidden'}}
             />
         </div>
     )
@@ -81,4 +81,5 @@ function RequestButton({text, action}) {
 RequestButton.propTypes = {
     text: PropTypes.string.isRequired,
     action: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
 }
