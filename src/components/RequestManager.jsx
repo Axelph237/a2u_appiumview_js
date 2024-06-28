@@ -40,7 +40,7 @@ export default function RequestManager() {
     const runAppiumTest = () => {
         httpMole.post('run_appium_test/')
             .then(response => {
-                console.log('Appium test started:', response.data);
+                console.log('Appium test completed:', response.data);
                 setLoading(false);
             })
             .catch(error => {
