@@ -1,0 +1,53 @@
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-button-container {
+    margin: 10px;
+}
+
+.post-button {
+    width: 350px;
+    height: 100px;
+    margin: 10px;
+
+    background: var(--light-blue);
+    border-radius: 15px;
+
+
+    color: white;
+    z-index: 1;
+}
+
+.post-button:hover:not(.loading) {
+    background: var(--a2u-blue);
+    cursor: pointer;
+ }
+
+.loading {
+    background: var(--federal-blue);
+}
+
+.loading-gear {
+    position: relative;
+    left: 50%;
+    top: -50%;
+    transform: translate(-25%, 25%);
+
+    width: 75px;
+    height: 75px;
+
+    animation: spin 1500ms linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: translate(-25%, 25%) rotate(0deg);
+    }
+    to {
+        transform: translate(-25%, 25%) rotate(-360deg);
+    }
+}

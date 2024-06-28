@@ -1,8 +1,9 @@
 import axios from 'axios';
-import './RequestButtons.css'
+import './RequestManager.css'
 import {useState} from "react";
 import Lottie from 'react-lottie';
 import loadingAnim from "../assets/lottie/square-loading.json"
+import gearIcon from "../assets/gear.svg"
 import PropTypes from "prop-types";
 
 export default function RequestManager() {
@@ -40,16 +41,20 @@ export default function RequestManager() {
         httpMole.post('run_appium_test/')
             .then(response => {
                 console.log('Appium test started:', response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error running Appium test:', error);
+                setLoading(false);
             });
+
+        setLoading(true);
     };
 
     return (
         <div className='button-container'>
-            <RequestButton action={startAppiumServer} text='Start Appium' loading={loading}/>
-            <RequestButton action={stopAppiumServer} text='Stop Appium' loading={loading}/>
+            <RequestButton action={startAppiumServer} text='Start Appium' loading={false}/>
+            <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
             <RequestButton action={runAppiumTest} text='Run Appium Test' loading={loading}/>
         </div>
     );
@@ -67,17 +72,22 @@ function RequestButton({text, action, loading}) {
     };
 
     return (
-        <div className='post-button layered' onClick={action}>
-            <p>{text}</p>
-            <Lottie
-                options={defaultOptions}
-                height={75}
-                width={75}
-                style={{position: "relative", left: "125px", visibility: loading ? 'visible' : 'hidden'}}
-            />
+        <div className='post-button-container layered'>
+            <object className='loading-gear' type="image/svg+xml" data={gearIcon} style={{visibility: loading ? 'visible' : 'hidden'}}/>
+            <div className={`post-button layered ${loading && 'loading'}`} onClick={action}>
+                <h3>{text}</h3>
+
+                {/*<Lottie*/}
+                {/*    options={defaultOptions}*/}
+                {/*    height={75}*/}
+                {/*    width={75}*/}
+                {/*    style={{position: "relative", left: "125px", visibility: loading ? 'visible' : 'hidden'}}*/}
+                {/*/>*/}
+            </div>
         </div>
     )
 }
+
 RequestButton.propTypes = {
     text: PropTypes.string.isRequired,
     action: PropTypes.func.isRequired,
