@@ -20,9 +20,9 @@ function App() {
                 </div>
             </div>
 
-            <DraggableComponent className="appiumBox">
-                <iframe className="appiumFrame" src={"http://" + defaultURL}></iframe>
-            </DraggableComponent>
+            {/*<DraggableComponent className="appiumBox">*/}
+            {/*    <iframe className="appiumFrame" src={"http://" + defaultURL}></iframe>*/}
+            {/*</DraggableComponent>*/}
         </>
     )
 }
