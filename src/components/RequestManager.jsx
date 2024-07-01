@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 
 export default function RequestManager() {
     const [loading, setLoading] = useState(false);
+    const [isRunning, setIsRunning] = useState(false)
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
@@ -41,14 +42,14 @@ export default function RequestManager() {
         httpMole.post('run_appium_test/')
             .then(response => {
                 console.log('Appium test completed:', response.data);
-                setLoading(false);
+                setIsRunning(false);
             })
             .catch(error => {
                 console.error('Error running Appium test:', error);
-                setLoading(false);
+                setIsRunning(false);
             });
 
-        setLoading(true);
+        setIsRunning(true);
     };
 
     const readTestRequirements = () => {
@@ -69,7 +70,7 @@ export default function RequestManager() {
         <div className='button-container'>
             <RequestButton action={startAppiumServer} text='Start Appium' loading={false}/>
             <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
-            <RequestButton action={runAppiumTest} text='Run Appium Test' loading={false}/>
+            <RequestButton action={runAppiumTest} text='Run Appium Test' loading={isRunning}/>
             <RequestButton action={readTestRequirements} text='Read Test Requirements' loading={loading}/>
         </div>
     );
