@@ -51,11 +51,26 @@ export default function RequestManager() {
         setLoading(true);
     };
 
+    const readTestRequirements = () => {
+        httpMole.post('read_test_requirements/')
+            .then(response => {
+                console.log('Requirements retrieved:', response.data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Error reading Appium test requirements:', error);
+                setLoading(false);
+            });
+
+        setLoading(true);
+    };
+
     return (
         <div className='button-container'>
             <RequestButton action={startAppiumServer} text='Start Appium' loading={false}/>
             <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
-            <RequestButton action={runAppiumTest} text='Run Appium Test' loading={loading}/>
+            <RequestButton action={runAppiumTest} text='Run Appium Test' loading={false}/>
+            <RequestButton action={readTestRequirements} text='Read Test Requirements' loading={loading}/>
         </div>
     );
 }
