@@ -18,7 +18,7 @@ class RequestManager extends Component {
                 baseURL: baseURL,
                 timeout: 50000
             }),
-            testElements: [],
+            testDefinitions: [],
             baseURL: baseURL,
         }
     }
@@ -35,14 +35,7 @@ class RequestManager extends Component {
                 if (response.data == null)
                     return
 
-                const testElements = []
-                for (let test of response.data) {
-                    testElements.push((
-                        <TestContainer baseURL={this.state.baseURL} testDefinition={test}/>
-                    ))
-                }
-
-                this.setState({testElements: testElements})
+                this.setState({testDefinitions: response.data})
             })
             .catch(error => {
                 console.error('Error reading Appium test requirements:', error);
@@ -70,7 +63,7 @@ class RequestManager extends Component {
             .catch(error => {
                 console.error('Error stopping Appium server:', error);
             });
-    };
+    }
 
 
     render() {
@@ -79,7 +72,9 @@ class RequestManager extends Component {
                 <RequestButton action={() => {this.startAppiumServer()}} text='Start Appium' loading={false}/>
                 <RequestButton action={() => {this.stopAppiumServer()}} text='Stop Appium' loading={false}/>
                 <RequestButton action={() => {this.getTests()}} text='Print Tests To Console' loading={false}/>
-                {this.state.testElements}
+                {this.state.testDefinitions.map(def => (
+                    <TestContainer key={def.test_id} baseURL={this.state.baseURL} testDefinition={def}/>
+                ))}
             </div>
         );
     }
