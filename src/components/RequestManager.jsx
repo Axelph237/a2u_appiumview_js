@@ -4,6 +4,7 @@ import {Component} from "react";
 import loadingAnim from "../assets/lottie/square-loading.json"
 import gearIcon from "../assets/gear.svg"
 import PropTypes from "prop-types";
+import TestContainer from "./TestContainer.jsx";
 
 class RequestManager extends Component {
 
@@ -16,19 +17,39 @@ class RequestManager extends Component {
             httpMole: axios.create({
                 baseURL: baseURL,
                 timeout: 50000
-            })
+            }),
+            testElements: [],
+            baseURL: baseURL,
         }
+    }
+
+    componentDidMount() {
+        this.getTests()
     }
 
     getTests() {
         this.state.httpMole.post('get_tests/')
             .then(response => {
                 console.log('Tests retrieved:', response.data);
+
+                if (response.data == null)
+                    return
+
+                const testElements = []
+                for (let test of response.data) {
+                    testElements.push((
+                        <TestContainer baseURL={this.state.baseURL} testDefinition={test}/>
+                    ))
+                }
+
+                this.setState({testElements: testElements})
             })
             .catch(error => {
                 console.error('Error reading Appium test requirements:', error);
+                return null
             });
     }
+
 
     startAppiumServer() {
         this.state.httpMole.post('start_appium/')
@@ -58,6 +79,7 @@ class RequestManager extends Component {
                 <RequestButton action={() => {this.startAppiumServer()}} text='Start Appium' loading={false}/>
                 <RequestButton action={() => {this.stopAppiumServer()}} text='Stop Appium' loading={false}/>
                 <RequestButton action={() => {this.getTests()}} text='Print Tests To Console' loading={false}/>
+                {this.state.testElements}
             </div>
         );
     }

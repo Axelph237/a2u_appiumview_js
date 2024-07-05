@@ -1,0 +1,31 @@
+.test-container {
+    background: var(--mint-green);
+    width: 500px;
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.run-button-container {
+    margin: 10px;
+}
+
+.run-button {
+    width: 350px;
+    height: 100px;
+    margin: 10px;
+
+    background: var(--light-blue);
+    border-radius: 15px;
+
+
+    color: white;
+    z-index: 1;
+}
+
+.run-button:hover:not(.loading) {
+    background: var(--a2u-blue);
+    cursor: pointer;
+}

@@ -2,6 +2,7 @@ import './App.css'
 import DraggableComponent from "./components/DraggableComponent.jsx";
 import RequestManager from "./components/RequestManager.jsx";
 import a2uLogo from "./assets/a2u-logo-white-nobg.png"
+import TestContainer from "./components/TestContainer.jsx";
 
 function App() {
     const defaultURL = "localhost:4723/"
@@ -16,7 +17,7 @@ function App() {
                 </div>
 
                 <div id='interact-column'>
-                    <RequestManager/>
+                    <RequestManager baseURL={'http://localhost:8000/appium/'}/>
                 </div>
             </div>
 
