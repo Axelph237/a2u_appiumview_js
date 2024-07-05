@@ -4,7 +4,7 @@
     padding: 10px;
     margin: 10px;
 
-    background: var(--dark-purple);
+    background: var(--light-blue);
     color: white;
     border-radius: 15px;
 
@@ -23,7 +23,7 @@
     height: 100px;
     margin: 10px;
 
-    background: var(--light-blue);
+    background: var(--a2u-blue);
     border-radius: 15px;
 
 
@@ -32,7 +32,7 @@
 }
 
 .run-button:hover:not(.loading) {
-    background: var(--a2u-blue);
+    background: var(--dark-purple);
     cursor: pointer;
 }
 
