@@ -36,20 +36,20 @@ class TestContainer extends Component {
         });
 
         // Join the array of words back into a single string
-        const capitalizedName = capitalizedWords.join(' ');
-
-        return capitalizedName;
+        return capitalizedWords.join(' ');
     }
 
     render() {
         return (
             <div className='test-container'>
-                <RunTestButton testDefinition={this.state.testDefinition} baseURL={this.state.baseURL} />
+                <h2>{this.state.testName}</h2>
+                <RunTestButton testDefinition={this.state.testDefinition} baseURL={this.state.baseURL}/>
             </div>
         )
     }
 
 }
+
 TestContainer.propTypes = {
     baseURL: PropTypes.string.isRequired,
     testDefinition: PropTypes.object.isRequired,
@@ -58,7 +58,7 @@ export default TestContainer;
 
 /// Function components
 function RunTestButton({testDefinition, baseURL}) {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const httpMole = axios.create({
         baseURL: baseURL,

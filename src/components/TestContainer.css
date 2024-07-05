@@ -1,9 +1,15 @@
 .test-container {
-    background: var(--mint-green);
-    width: 500px;
+    width: 350px;
     height: 200px;
+    padding: 10px;
+    margin: 10px;
+
+    background: var(--dark-purple);
+    color: white;
+    border-radius: 15px;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
