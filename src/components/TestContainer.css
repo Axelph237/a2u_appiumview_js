@@ -35,3 +35,7 @@
     background: var(--a2u-blue);
     cursor: pointer;
 }
+
+.loading {
+    background: var(--federal-blue);
+}
