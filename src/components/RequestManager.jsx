@@ -1,46 +1,37 @@
 import axios from 'axios';
 import './RequestManager.css'
-import {useState} from "react";
-import Lottie from 'react-lottie';
+import {Component} from "react";
 import loadingAnim from "../assets/lottie/square-loading.json"
 import gearIcon from "../assets/gear.svg"
 import PropTypes from "prop-types";
 
-export default function RequestManager() {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-    const testButtons = []
+class RequestManager extends Component {
 
+    constructor(props) {
+        super(props);
 
-    const httpMole = axios.create({
-        baseURL: 'http://localhost:8000/appium/',
-        timeout: 50000
-    })
+        const baseURL = props.baseURL != null ? props.baseURL : 'http://localhost:8000/appium/'
 
-    const getTests = () => {
-        httpMole.post('get_tests/')
+        this.state = {
+            httpMole: axios.create({
+                baseURL: baseURL,
+                timeout: 50000
+            })
+        }
+    }
+
+    getTests() {
+        this.state.httpMole.post('get_tests/')
             .then(response => {
                 console.log('Tests retrieved:', response.data);
-                return response.data;
             })
             .catch(error => {
                 console.error('Error reading Appium test requirements:', error);
             });
-
-        setLoading(true);
-    };
-
-    const testDefinitions = getTests()
-
-    for (let def of testDefinitions) {
-        testButtons.push((
-            <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
-            ))
     }
 
-    const startAppiumServer = () => {
-        httpMole.post('start_appium/')
+    startAppiumServer() {
+        this.state.httpMole.post('start_appium/')
             .then(async response => {
             console.log('Appium server started:', response.data);
 
@@ -48,10 +39,10 @@ export default function RequestManager() {
             .catch(error => {
                 console.error('Error starting Appium server:', error);
             });
-    };
+    }
 
-    const stopAppiumServer = () => {
-        httpMole.post('stop_appium/')
+    stopAppiumServer() {
+        this.state.httpMole.post('stop_appium/')
             .then(response => {
                 console.log('Appium server stopped:', response.data);
             })
@@ -61,13 +52,20 @@ export default function RequestManager() {
     };
 
 
-    return (
-        <div className='button-container'>
-            <RequestButton action={startAppiumServer} text='Start Appium' loading={false}/>
-            <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
-        </div>
-    );
+    render() {
+        return (
+            <div className='button-container'>
+                <RequestButton action={() => {this.startAppiumServer()}} text='Start Appium' loading={false}/>
+                <RequestButton action={() => {this.stopAppiumServer()}} text='Stop Appium' loading={false}/>
+            </div>
+        );
+    }
 }
+RequestManager.propTypes = {
+    baseURL: PropTypes.string,
+}
+
+export default RequestManager;
 
 function RequestButton({text, action, loading}) {
 
