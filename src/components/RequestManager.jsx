@@ -98,7 +98,8 @@ function RequestButton({text, action, loading}) {
 
     return (
         <div className='post-button-container layered'>
-            <object className='loading-gear' type="image/svg+xml" data={gearIcon} style={{visibility: loading ? 'visible' : 'hidden'}}/>
+            <img className='loading-gear' src={gearIcon} alt="Your SVG" type="image/svg+xml"
+                 style={{visibility: loading ? 'visible' : 'hidden'}}/>
             <div className={`post-button layered ${loading && 'loading'}`} onClick={action}>
                 <h3>{text}</h3>
 

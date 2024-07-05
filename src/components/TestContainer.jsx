@@ -83,13 +83,14 @@ function RunTestButton({testDefinition, baseURL}) {
 
     return (
         <div className='run-button-container layered'>
-            <object className='loading-gear' type="image/svg+xml" data={gearIcon} style={{visibility: loading ? 'visible' : 'hidden'}}/>
+            <img className='loading-gear' src={gearIcon} alt="Your SVG" type="image/svg+xml" style={{visibility: loading ? 'visible' : 'hidden'}}/>
             <div className={`run-button layered ${loading && 'loading'}`} onClick={runAppiumTest}>
                 <h3>Run Test!</h3>
             </div>
         </div>
     )
 }
+
 RunTestButton.propTypes = {
     testDefinition: PropTypes.object.isRequired,
     baseURL: PropTypes.string.isRequired,

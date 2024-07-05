@@ -40,6 +40,8 @@
     width: 75px;
     height: 75px;
 
+    background-color: transparent !important;
+
     animation: spin 1500ms linear infinite;
 }
 
