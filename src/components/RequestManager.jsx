@@ -10,11 +10,34 @@ export default function RequestManager() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const testButtons = []
+
 
     const httpMole = axios.create({
         baseURL: 'http://localhost:8000/appium/',
         timeout: 50000
     })
+
+    const getTests = () => {
+        httpMole.post('get_tests/')
+            .then(response => {
+                console.log('Tests retrieved:', response.data);
+                return response.data;
+            })
+            .catch(error => {
+                console.error('Error reading Appium test requirements:', error);
+            });
+
+        setLoading(true);
+    };
+
+    const testDefinitions = getTests()
+
+    for (let def of testDefinitions) {
+        testButtons.push((
+            <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
+            ))
+    }
 
     const startAppiumServer = () => {
         httpMole.post('start_appium/')
@@ -37,40 +60,11 @@ export default function RequestManager() {
             });
     };
 
-    const runAppiumTest = () => {
-        httpMole.post('run_appium_test/')
-            .then(response => {
-                console.log('Appium test completed:', response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error running Appium test:', error);
-                setLoading(false);
-            });
-
-        setLoading(true);
-    };
-
-    const readTestRequirements = () => {
-        httpMole.post('read_test_requirements/')
-            .then(response => {
-                console.log('Requirements retrieved:', response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error reading Appium test requirements:', error);
-                setLoading(false);
-            });
-
-        setLoading(true);
-    };
 
     return (
         <div className='button-container'>
             <RequestButton action={startAppiumServer} text='Start Appium' loading={false}/>
             <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
-            <RequestButton action={runAppiumTest} text='Run Appium Test' loading={false}/>
-            <RequestButton action={readTestRequirements} text='Read Test Requirements' loading={loading}/>
         </div>
     );
 }
@@ -102,9 +96,10 @@ function RequestButton({text, action, loading}) {
         </div>
     )
 }
-
 RequestButton.propTypes = {
     text: PropTypes.string.isRequired,
     action: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
 }
+
+
