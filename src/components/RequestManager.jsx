@@ -57,6 +57,7 @@ class RequestManager extends Component {
             <div className='button-container'>
                 <RequestButton action={() => {this.startAppiumServer()}} text='Start Appium' loading={false}/>
                 <RequestButton action={() => {this.stopAppiumServer()}} text='Stop Appium' loading={false}/>
+                <RequestButton action={() => {this.getTests()}} text='Print Tests To Console' loading={false}/>
             </div>
         );
     }
