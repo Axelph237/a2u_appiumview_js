@@ -1,0 +1,22 @@
+.test-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+
+    overflow: hidden;
+    overflow-x: scroll;
+
+    background: transparent;
+}
+
+.test-button {
+    width: 130px;
+    min-width: 130px;
+    height: 75px;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
