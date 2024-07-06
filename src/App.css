@@ -3,7 +3,7 @@
   width: 100vw;
 
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 columns */
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, 1fr);
 }
 
