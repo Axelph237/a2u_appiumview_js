@@ -51,19 +51,39 @@ export default class ScriptPage extends Component {
             });
     }
 
-    openTestData(testID) {
-        this.setState({openTest: testID})
+    getTestData(testID) {
+        if (testID < 0 || testID >= this.state.testDefinitions.length)
+            return null
 
-        console.log(testID)
+        return this.state.testDefinitions[testID]
     }
 
-    getTestData(testID) {
-        if (testID < 0)
+    getDefinitionInputs(testID) {
+        const data = this.getTestData(testID);
+
+        if (data == null)
+            return data
+
+        return Object.keys(data.params)
+    }
+
+    // THIS IS A TEMPORARY FUNCTION FOR TESTING PURPOSES
+    getDefinitionAsString(testID) {
+        if (testID < 0 || testID >= this.state.testDefinitions.length)
             return 'Click a test to see its definition!'
 
         const formattedJson = JSON.stringify(this.state.testDefinitions[testID], null, 2)
 
         return formattedJson
+    }
+
+    loadInput() {
+        if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
+            return []
+
+        return this.getDefinitionInputs(this.state.openTest).map(input => (
+                    <div className='input-box' key={input}>{input}</div>
+                ))
     }
 
     render() {
@@ -72,24 +92,18 @@ export default class ScriptPage extends Component {
                 <div id='test-container'>
                     {this.state.testDefinitions.map(def => (
                         <TestButton fileName={def.file_name}
-                                    onClick={() => this.openTestData(def.test_id)}
+                                    onClick={() => this.setState({openTest: def.test_id})}
                                     background={'var(--a2u-blue)'}
                                     key={def.test_id}
                         />
                     ))}
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
-                    <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
                 </div>
 
                 <div id='test-view' className='layered'>
-                    <b>{this.getTestData(this.state.openTest)}</b>
+                    <div className='input-container'>
+                        <b>{this.getDefinitionAsString(this.state.openTest)}</b>
+                        {this.loadInput()}
+                    </div>
                     <div id='test-run-button'>
                         <b>Run Test</b>
                     </div>
