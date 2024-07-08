@@ -1,12 +1,42 @@
-.test-container {
+#script-page {
+    height: calc(100vh - 20px);
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+
+    color: white;
+}
+
+#test-container {
+    height: 100px;
+
+    grid-column: 1 / span 4;
+    align-self: center;
+
     display: flex;
     flex-direction: row;
     justify-content: start;
 
     overflow: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
 
     background: transparent;
+}
+
+#test-view  {
+    grid-column: 1 / span 4;
+    grid-row: 2 / span 4;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 10px;
+    margin: 10px;
+
+    background: var(--light-blue);
+    color: black;
 }
 
 .test-button {
@@ -14,9 +44,13 @@
     min-width: 130px;
     height: 75px;
 
+    margin: 0px 10px;
+
     border-radius: 10px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    cursor: pointer;
 }
