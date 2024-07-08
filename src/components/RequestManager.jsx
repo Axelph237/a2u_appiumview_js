@@ -5,6 +5,7 @@ import loadingAnim from "../assets/lottie/square-loading.json"
 import gearIcon from "../assets/gear.svg"
 import PropTypes from "prop-types";
 import TestContainer from "./TestContainer.jsx";
+import ScriptPage from "./pages/ScriptPage.jsx";
 
 class RequestManager extends Component {
 
@@ -25,22 +26,6 @@ class RequestManager extends Component {
 
     componentDidMount() {
         this.getTests()
-    }
-
-    getTests() {
-        this.state.httpMole.post('get_tests/')
-            .then(response => {
-                console.log('Tests retrieved:', response.data);
-
-                if (response.data == null)
-                    return
-
-                this.setState({testDefinitions: response.data})
-            })
-            .catch(error => {
-                console.error('Error reading Appium test requirements:', error);
-                return null
-            });
     }
 
 
@@ -71,10 +56,10 @@ class RequestManager extends Component {
             <div className='button-container'>
                 <RequestButton action={() => {this.startAppiumServer()}} text='Start Appium' loading={false}/>
                 <RequestButton action={() => {this.stopAppiumServer()}} text='Stop Appium' loading={false}/>
-                <RequestButton action={() => {this.getTests()}} text='Print Tests To Console' loading={false}/>
-                {this.state.testDefinitions.map(def => (
-                    <TestContainer key={def.test_id} baseURL={this.state.baseURL} testDefinition={def}/>
-                ))}
+                <RequestButton action={() => {ScriptPage.getTests()}} text='Print Tests To Console' loading={false}/>
+                {/*{this.state.testDefinitions.map(def => (*/}
+                {/*    <TestContainer key={def.test_id} baseURL={this.state.baseURL} testDefinition={def}/>*/}
+                {/*))}*/}
             </div>
         );
     }
