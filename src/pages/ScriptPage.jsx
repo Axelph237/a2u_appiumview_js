@@ -88,8 +88,11 @@ export default class ScriptPage extends Component {
                     <div className='test-button' style={{background: 'var(--a2u-blue)'}}></div>
                 </div>
 
-                <div id='test-view'>
+                <div id='test-view' className='layered'>
                     <b>{this.getTestData(this.state.openTest)}</b>
+                    <div id='test-run-button'>
+                        <b>Run Test</b>
+                    </div>
                 </div>
             </div>
         )

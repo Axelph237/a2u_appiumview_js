@@ -28,10 +28,6 @@
     grid-column: 1 / span 4;
     grid-row: 2 / span 4;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     border-radius: 10px;
     margin: 10px;
 
@@ -47,6 +43,27 @@
     margin: 0px 10px;
 
     border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+#test-run-button {
+    width: 130px;
+    min-width: 130px;
+    height: 75px;
+
+    border-radius: 10px;
+    margin: 10px;
+
+    background: var(--a2u-blue);
+    color: white;
+
+    align-self: end;
+    justify-self: end;
 
     display: flex;
     align-items: center;
