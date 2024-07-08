@@ -1,13 +1,12 @@
-#page-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+#page-layout {
+  width: 100vw;
+  display: flex;
 }
 
 #sidebar {
   height: calc(100vh - 20px);
 
-  grid-row: 1 / span 4;
+  flex: 1;
 
   display: flex;
   flex-direction: column;
@@ -21,8 +20,7 @@
 }
 
 #open-page {
-  grid-column: 2 / span 5;
-  grid-row: 1 / span 4;
+  flex: 4;
 }
 
 #interact-column {
