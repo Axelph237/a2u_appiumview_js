@@ -18,7 +18,7 @@ function App() {
                 </div>
 
                 <div id='open-page'>
-                    <ScriptPage />
+                    <ScriptPage baseURL='http://localhost:8000/appium/'/>
                 </div>
 
                 {/*<div id='interact-column'>*/}
