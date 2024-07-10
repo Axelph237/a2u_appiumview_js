@@ -27,7 +27,7 @@ export default class ScriptPage extends Component {
 
         this.getTests()
     }
-
+    // TODO remove this comment
     getTests() {
         const baseURL = this.props.baseURL != null ? this.props.baseURL : 'http://localhost:8000/appium/'
 
