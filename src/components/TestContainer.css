@@ -1,0 +1,41 @@
+.test-container {
+    width: 350px;
+    height: 200px;
+    padding: 10px;
+    margin: 10px;
+
+    background: var(--light-blue);
+    color: white;
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.run-button-container {
+    margin: 10px;
+}
+
+.run-button {
+    width: 350px;
+    height: 100px;
+    margin: 10px;
+
+    background: var(--a2u-blue);
+    border-radius: 15px;
+
+
+    color: white;
+    z-index: 1;
+}
+
+.run-button:hover:not(.loading) {
+    background: var(--dark-purple);
+    cursor: pointer;
+}
+
+.loading {
+    background: var(--federal-blue);
+}

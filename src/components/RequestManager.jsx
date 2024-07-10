@@ -1,24 +1,35 @@
 import axios from 'axios';
 import './RequestManager.css'
-import {useState} from "react";
-import Lottie from 'react-lottie';
+import {Component} from "react";
 import loadingAnim from "../assets/lottie/square-loading.json"
 import gearIcon from "../assets/gear.svg"
 import PropTypes from "prop-types";
+import TestContainer from "./TestContainer.jsx";
 
-export default function RequestManager() {
-    const [loading, setLoading] = useState(false);
-    const [isRunning, setIsRunning] = useState(false)
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+class RequestManager extends Component {
 
-    const httpMole = axios.create({
-        baseURL: 'http://localhost:8000/appium/',
-        timeout: 50000
-    })
+    constructor(props) {
+        super(props);
 
-    const startAppiumServer = () => {
-        httpMole.post('start_appium/')
+        const baseURL = props.baseURL != null ? props.baseURL : 'http://localhost:8000/appium/'
+
+        this.state = {
+            httpMole: axios.create({
+                baseURL: baseURL,
+                timeout: 50000
+            }),
+            testDefinitions: [],
+            baseURL: baseURL,
+        }
+    }
+
+    componentDidMount() {
+        this.getTests()
+    }
+
+
+    startAppiumServer() {
+        this.state.httpMole.post('start_appium/')
             .then(async response => {
             console.log('Appium server started:', response.data);
 
@@ -26,55 +37,37 @@ export default function RequestManager() {
             .catch(error => {
                 console.error('Error starting Appium server:', error);
             });
-    };
+    }
 
-    const stopAppiumServer = () => {
-        httpMole.post('stop_appium/')
+    stopAppiumServer() {
+        this.state.httpMole.post('stop_appium/')
             .then(response => {
                 console.log('Appium server stopped:', response.data);
             })
             .catch(error => {
                 console.error('Error stopping Appium server:', error);
             });
-    };
+    }
 
-    const runAppiumTest = () => {
-        httpMole.post('run_appium_test/')
-            .then(response => {
-                console.log('Appium test completed:', response.data);
-                setIsRunning(false);
-            })
-            .catch(error => {
-                console.error('Error running Appium test:', error);
-                setIsRunning(false);
-            });
 
-        setIsRunning(true);
-    };
-
-    const readTestRequirements = () => {
-        httpMole.post('read_test_requirements/')
-            .then(response => {
-                console.log('Appium test data:', response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error getting Appium test data:', error);
-                setLoading(false);
-            });
-
-        setLoading(true);
-    };
-
-    return (
-        <div className='button-container'>
-            <RequestButton action={startAppiumServer} text='Start Appium' loading={false}/>
-            <RequestButton action={stopAppiumServer} text='Stop Appium' loading={false}/>
-            <RequestButton action={runAppiumTest} text='Run Appium Test' loading={isRunning}/>
-            <RequestButton action={readTestRequirements} text='Read Test Requirements' loading={loading}/>
-        </div>
-    );
+    render() {
+        return (
+            <div className='button-container'>
+                <RequestButton action={() => {this.startAppiumServer()}} text='Start Appium' loading={false}/>
+                <RequestButton action={() => {this.stopAppiumServer()}} text='Stop Appium' loading={false}/>
+                <RequestButton action={() => {this.getTests()}} text='Print Tests To Console' loading={false}/>
+                {/*{this.state.testDefinitions.map(def => (*/}
+                {/*    <TestContainer key={def.test_id} baseURL={this.state.baseURL} testDefinition={def}/>*/}
+                {/*))}*/}
+            </div>
+        );
+    }
 }
+RequestManager.propTypes = {
+    baseURL: PropTypes.string,
+}
+
+export default RequestManager;
 
 function RequestButton({text, action, loading}) {
 
@@ -89,7 +82,8 @@ function RequestButton({text, action, loading}) {
 
     return (
         <div className='post-button-container layered'>
-            <object className='loading-gear' type="image/svg+xml" data={gearIcon} style={{visibility: loading ? 'visible' : 'hidden'}}/>
+            <img className='loading-gear' src={gearIcon} alt="Your SVG" type="image/svg+xml"
+                 style={{visibility: loading ? 'visible' : 'hidden'}}/>
             <div className={`post-button layered ${loading && 'loading'}`} onClick={action}>
                 <h3>{text}</h3>
 
@@ -103,9 +97,10 @@ function RequestButton({text, action, loading}) {
         </div>
     )
 }
-
 RequestButton.propTypes = {
     text: PropTypes.string.isRequired,
     action: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
 }
+
+
