@@ -72,16 +72,6 @@ export default class ScriptPage extends Component {
         return data.params
     }
 
-    // THIS IS A TEMPORARY FUNCTION FOR TESTING PURPOSES
-    getDefinitionAsString(testID) {
-        if (testID < 0 || testID >= this.state.testDefinitions.length)
-            return 'Click a test to see its definition!'
-
-        const formattedJson = JSON.stringify(this.state.testDefinitions[testID], null, 2)
-
-        return formattedJson
-    }
-
     // Creates input elements as an array
     loadInput() {
         if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
@@ -91,7 +81,7 @@ export default class ScriptPage extends Component {
 
         // inputID is of type String
         return Object.keys(inputParams).map(inputID => (
-                    <TestInput inputID={inputID} key={inputID}/>
+                    <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
                 ))
     }
 
@@ -110,7 +100,7 @@ export default class ScriptPage extends Component {
 
                 <div id='test-view' className='layered'>
                     <div className='input-box'>
-                        <b>{this.getDefinitionAsString(this.state.openTest)}</b>
+                        <h2>Test Input</h2>
                         {this.loadInput()}
                     </div>
                     <div id='test-run-button'>
@@ -139,16 +129,52 @@ TestButton.propTypes = {
     background: PropTypes.string.isRequired,
 }
 
-function TestInput({inputID}) {
+function TestInput({inputID, defaultValue}) {
+
+    let inputElement = (<></>)
+
+    switch (typeof defaultValue) {
+        case "string":
+            console.log(defaultValue + " is type String!")
+            inputElement = (
+                <input className='test-input-box' type='text' defaultValue={defaultValue}/>
+            )
+            break;
+
+        case "number":
+            console.log(defaultValue + " is type Number!")
+            inputElement = (
+                <input className='test-input-box' type='number' defaultValue={defaultValue}/>
+            )
+            break;
+
+            // TODO fix checkbox formatting
+        case "boolean":
+            console.log(defaultValue + " is type Boolean!")
+            inputElement = (
+                <div className='checkbox-container'>
+                    <input className='test-input-box custom-checkbox' type='checkbox' defaultChecked={defaultValue}/>
+                    <span className="input-checkmark"></span>
+                </div>
+            )
+            break;
+
+        case "object":
+            console.log(defaultValue + " is type Object!")
+            break;
+        default:
+            break;
+    }
 
     return (
         <div className='input-container'>
             <b>{inputID.toUpperCase()}</b>
-            <input className='test-input-box' type='text'/>
+            {inputElement}
         </div>
     )
 }
 
 TestInput.propTypes = {
     inputID: PropTypes.string.isRequired,
+    defaultValue: PropTypes.string,
 }
