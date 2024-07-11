@@ -14,7 +14,7 @@
 
   color-scheme: light dark;
   color: var(--dark-purple);
-  background-color: white;
+  background-color: var(--light-blue);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
