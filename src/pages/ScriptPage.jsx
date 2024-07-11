@@ -28,6 +28,7 @@ export default class ScriptPage extends Component {
         this.getTests()
     }
 
+    // Sends a request to the server backend
     getTests() {
         const baseURL = this.props.baseURL != null ? this.props.baseURL : 'http://localhost:8000/appium/'
 
@@ -36,7 +37,7 @@ export default class ScriptPage extends Component {
             timeout: 50000
         })
 
-        httpMole.post('get_tests/')
+        httpMole.get('tests/', {responseType: 'json'})
             .then(response => {
                 console.log('Tests retrieved:', response.data);
 
@@ -128,4 +129,8 @@ TestButton.propTypes = {
     fileName: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     background: PropTypes.string.isRequired,
+}
+
+function TestInput({fieldName}) {
+
 }
