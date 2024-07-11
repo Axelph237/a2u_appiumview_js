@@ -5,8 +5,8 @@
   --light-blue: #A6CFD5;
   --mint-green: #C2E7D9;
 
-  --button-color: #90DDF0;
-  --bg-color: #424651;
+  --button-color: #DFE2EC;
+  --bg-color: #CFD3E1;
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -14,7 +14,7 @@
 
   color-scheme: light dark;
   color: var(--dark-purple);
-  background-color: var(--light-blue);
+  background-color: var(--bg-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
