@@ -3,7 +3,6 @@ import './ScriptPage.css'
 import {Component} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import TestContainer from "../components/TestContainer.jsx";
 
 export default class ScriptPage extends Component {
 
@@ -64,13 +63,13 @@ export default class ScriptPage extends Component {
 
     // Returns the input parameters of the test with the specified ID
     // Otherwise, returns null
-    getDefinitionInputs(testID) {
+    getDefinitionInput(testID) {
         const data = this.getTestData(testID);
 
         if (data == null)
             return data
 
-        return Object.keys(data.params)
+        return data.params
     }
 
     // THIS IS A TEMPORARY FUNCTION FOR TESTING PURPOSES
@@ -88,8 +87,10 @@ export default class ScriptPage extends Component {
         if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
             return []
 
+        const inputParams = this.getDefinitionInput(this.state.openTest)
+
         // inputID is of type String
-        return this.getDefinitionInputs(this.state.openTest).map(inputID => (
+        return Object.keys(inputParams).map(inputID => (
                     <TestInput inputID={inputID} key={inputID}/>
                 ))
     }
