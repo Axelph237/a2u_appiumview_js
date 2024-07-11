@@ -100,7 +100,7 @@
     align-items: start;
     justify-content: center;
 
-    > b {
+    > div > b, p {
         font-size: 12px;
 
         color: #A6A9B4;

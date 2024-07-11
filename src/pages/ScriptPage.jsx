@@ -132,8 +132,9 @@ TestButton.propTypes = {
 function TestInput({inputID, defaultValue}) {
 
     let inputElement = (<></>)
+    let inputType = typeof defaultValue
 
-    switch (typeof defaultValue) {
+    switch (inputType) {
         case "string":
             inputElement = (
                 <input className='test-input-box' type='text' defaultValue={defaultValue}/>
@@ -165,7 +166,10 @@ function TestInput({inputID, defaultValue}) {
 
     return (
         <div className='input-container'>
-            <b>{inputID.toUpperCase()}</b>
+            <div className='layered' style={{width: '100%'}}>
+                <b style={{justifySelf: 'start'}}>{inputID.toUpperCase()}</b>
+                <p style={{justifySelf: 'end'}}>{inputType.toUpperCase()}</p>
+            </div>
             {inputElement}
         </div>
     )
