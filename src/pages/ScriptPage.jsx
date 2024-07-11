@@ -135,14 +135,12 @@ function TestInput({inputID, defaultValue}) {
 
     switch (typeof defaultValue) {
         case "string":
-            console.log(defaultValue + " is type String!")
             inputElement = (
                 <input className='test-input-box' type='text' defaultValue={defaultValue}/>
             )
             break;
 
         case "number":
-            console.log(defaultValue + " is type Number!")
             inputElement = (
                 <input className='test-input-box' type='number' defaultValue={defaultValue}/>
             )
@@ -150,7 +148,6 @@ function TestInput({inputID, defaultValue}) {
 
             // TODO fix checkbox formatting
         case "boolean":
-            console.log(defaultValue + " is type Boolean!")
             inputElement = (
                 <div className='checkbox-container'>
                     <input className='test-input-box custom-checkbox' type='checkbox' defaultChecked={defaultValue}/>
