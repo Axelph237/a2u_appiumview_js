@@ -3,6 +3,7 @@ import './ScriptPage.css'
 import {Component} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import TestContainer from "../components/TestContainer.jsx";
 
 export default class ScriptPage extends Component {
 
@@ -28,7 +29,7 @@ export default class ScriptPage extends Component {
         this.getTests()
     }
 
-    // Sends a request to the server backend
+    // Sends a GET request to the server backend and returns a list of all test definitions
     getTests() {
         const baseURL = this.props.baseURL != null ? this.props.baseURL : 'http://localhost:8000/appium/'
 
@@ -52,6 +53,8 @@ export default class ScriptPage extends Component {
             });
     }
 
+    // Returns the testDefinition of the test with the specified ID
+    // Otherwise, returns null
     getTestData(testID) {
         if (testID < 0 || testID >= this.state.testDefinitions.length)
             return null
@@ -59,6 +62,8 @@ export default class ScriptPage extends Component {
         return this.state.testDefinitions[testID]
     }
 
+    // Returns the input parameters of the test with the specified ID
+    // Otherwise, returns null
     getDefinitionInputs(testID) {
         const data = this.getTestData(testID);
 
@@ -78,12 +83,14 @@ export default class ScriptPage extends Component {
         return formattedJson
     }
 
+    // Creates input elements as an array
     loadInput() {
         if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
             return []
 
-        return this.getDefinitionInputs(this.state.openTest).map(input => (
-                    <div className='input-box' key={input}>{input}</div>
+        // inputID is of type String
+        return this.getDefinitionInputs(this.state.openTest).map(inputID => (
+                    <TestInput inputID={inputID} key={inputID}/>
                 ))
     }
 
@@ -101,7 +108,7 @@ export default class ScriptPage extends Component {
                 </div>
 
                 <div id='test-view' className='layered'>
-                    <div className='input-container'>
+                    <div className='input-box'>
                         <b>{this.getDefinitionAsString(this.state.openTest)}</b>
                         {this.loadInput()}
                     </div>
@@ -131,6 +138,16 @@ TestButton.propTypes = {
     background: PropTypes.string.isRequired,
 }
 
-function TestInput({fieldName}) {
+function TestInput({inputID}) {
 
+    return (
+        <div className='input-container'>
+            <b>{inputID.toUpperCase()}</b>
+            <input className='test-input-box' type='text'/>
+        </div>
+    )
+}
+
+TestInput.propTypes = {
+    inputID: PropTypes.string.isRequired,
 }
