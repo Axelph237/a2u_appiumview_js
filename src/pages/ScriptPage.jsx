@@ -90,7 +90,7 @@ export default class ScriptPage extends Component {
             <div id='script-page'>
                 <div id='test-container'>
                     {this.state.testDefinitions.map(def => (
-                        <TestButton fileName={def.file_name}
+                        <TestButton testDef={def}
                                     onClick={() => this.setState({openTest: def.test_id})}
                                     background={'var(--a2u-blue)'}
                                     key={def.test_id}
@@ -100,7 +100,7 @@ export default class ScriptPage extends Component {
 
                 <div id='test-view' className='layered'>
                     <div className='input-box'>
-                        <h2>Test Input</h2>
+                        <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                         {this.loadInput()}
                     </div>
                     <div id='test-run-button'>
@@ -115,16 +115,34 @@ ScriptPage.propTypes = {
     baseURL: PropTypes.string.isRequired,
 }
 
-function TestButton({fileName, onClick, background}) {
+function TestButton({testDef, onClick, background}) {
+
+    const beautifyName = (name) => {
+        const splitString = name.split('_')
+        console.log(splitString)
+
+        let finalName = ''
+        for (let s of splitString) {
+
+            console.log(s.substring(1))
+            finalName = finalName + ' ' +  s.charAt(0).toUpperCase() + s.substring(1)
+            console.log(finalName)
+        }
+
+        return finalName.trimEnd()
+    }
 
     return (
         <div className='test-button' style={{background: background}} onClick={onClick}>
-            <p>{fileName}</p>
+            <h1>{beautifyName(testDef.file_name)}</h1>
+            <h2>{'Parameter count: ' + Object.keys(testDef.params).length}</h2>
+            <h3>{testDef.file_name}</h3>
         </div>
     )
 }
+
 TestButton.propTypes = {
-    fileName: PropTypes.string.isRequired,
+    testDef: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     background: PropTypes.string.isRequired,
 }
