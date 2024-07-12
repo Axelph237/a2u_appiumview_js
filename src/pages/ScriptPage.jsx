@@ -1,6 +1,6 @@
 import './ScriptPage.css'
 
-import {Component} from "react";
+import {Component, useState} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -130,6 +130,7 @@ TestButton.propTypes = {
 }
 
 function TestInput({inputID, defaultValue}) {
+    const [booleanInput, setBooleanInput] = useState(false)
 
     let inputElement = (<></>)
     let inputType = typeof defaultValue
@@ -149,10 +150,14 @@ function TestInput({inputID, defaultValue}) {
 
             // TODO fix checkbox formatting
         case "boolean":
+
             inputElement = (
                 <div className='checkbox-container'>
-                    <input className='test-input-box custom-checkbox' type='checkbox' defaultChecked={defaultValue}/>
-                    <span className="input-checkmark"></span>
+                    <input className='test-input-box' type='checkbox' value={booleanInput}/>
+                    <div className='tf-container'>
+                        <div className={`boolean-checkbox ${!booleanInput && 'checked'}`} onClick={() => setBooleanInput(false)}>False</div>
+                        <div className={`boolean-checkbox ${booleanInput && 'checked'}`} onClick={() => setBooleanInput(true)}>True</div>
+                    </div>
                 </div>
             )
             break;

@@ -161,55 +161,53 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* Hide the browser's default checkbox */
-.checkbox-container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
+.checkbox-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
 }
 
 /* Create a custom checkbox */
-.input-checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
+.tf-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
-/* On mouse-over, add a grey background color */
-.checkbox-container:hover input ~ .input-checkmark {
-    background-color: #ccc;
-}
+.boolean-checkbox {
+    width: 75px;
+    height: 20px;
+    margin: 0px 3px;
 
-/* When the checkbox is checked, add a blue background */
-.checkbox-container input:checked ~ .input-checkmark {
-    background-color: #2196F3;
-}
+    font-weight: bold;
 
-/* Create the checkmark/indicator (hidden when not checked) */
-.input-checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
+    border: 3px solid var(--dark-purple);
+    border-radius: 20px;
 
-/* Show the checkmark when checked */
-.checkbox-container input:checked ~ .input-checkmark:after {
-    display: block;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-/* Style the checkmark/indicator */
-.checkbox-container .input-checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    cursor: pointer;
+}
+.boolean-checkbox.checked {
+    background: var(--dark-purple);
+    color: var(--button-color);
+}
+.boolean-checkbox:not(.checked) {
+    background: var(--button-color);
+    color: var(--dark-purple);
 }
