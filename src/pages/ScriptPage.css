@@ -119,26 +119,6 @@
     border-radius: 5px;
 }
 
-.test-input-box::placeholder {
-}
-
-.test-input-box-input:focus {
-    background: transparent;
-    border: none;
-    outline: none;
-}
-
-.test-input-box:disabled {
-    cursor: not-allowed;
-}
-
-.test-input-box:invalid {
-}
-
-.test-input-box:valid {
-}
-
-
 /* Styling for input boxes of different types*/
 input[type="text"] {
     padding: 0px;
