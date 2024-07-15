@@ -135,8 +135,10 @@ function TestButton({testDef, onClick, background}) {
     return (
         <div className='test-button' style={{background: background}} onClick={onClick}>
             <h1>{beautifyName(testDef.file_name)}</h1>
-            <h2>{'Parameter count: ' + Object.keys(testDef.params).length}</h2>
-            <h3>{testDef.file_name}</h3>
+            <div className='test-info-box'>
+                <p>{'Parameter count: ' + Object.keys(testDef.params).length}</p>
+                <p>{testDef.file_name}</p>
+            </div>
         </div>
     )
 }
