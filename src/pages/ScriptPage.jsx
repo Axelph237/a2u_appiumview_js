@@ -11,7 +11,7 @@ export default class ScriptPage extends Component {
 
         this.state = {
             testDefinitions:[],
-            containers: [],
+            inputFields: [],
             openTestIndex: -1,
         }
     }
@@ -160,8 +160,6 @@ TestButton.propTypes = {
 
 function TestInput({inputID, defaultValue}) {
     const [booleanInput, setBooleanInput] = useState(false)
-
-    console.log('Input "' + inputID + '" made with value of ' + defaultValue)
 
     let inputElement = (<></>)
     let inputType = typeof defaultValue
