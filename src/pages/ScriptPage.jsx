@@ -12,7 +12,7 @@ export default class ScriptPage extends Component {
         this.state = {
             testDefinitions:[],
             containers: [],
-            openTest: -1,
+            openTestIndex: -1,
         }
     }
 
@@ -72,12 +72,25 @@ export default class ScriptPage extends Component {
         return data.params
     }
 
+    retrieveUserInput() {
+        if (this.state.openTestIndex < 0)
+            return null
+
+        const inputs = document.getElementsByClassName('test-input-box')
+        let currTestDef = this.state.testDefinitions[this.state.openTestIndex]
+
+        for (let i of inputs)
+            currTestDef.params[i.name] = i.value
+
+        console.log(currTestDef)
+    }
+
     // Creates input elements as an array
     loadInput() {
-        if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
+        if (this.state.openTestIndex < 0 || this.state.openTestIndex > this.state.testDefinitions.length)
             return []
 
-        const inputParams = this.getDefinitionInput(this.state.openTest)
+        const inputParams = this.getDefinitionInput(this.state.openTestIndex)
 
         // inputID is of type String
         return Object.keys(inputParams).map(inputID => (
@@ -91,7 +104,7 @@ export default class ScriptPage extends Component {
                 <div id='test-container'>
                     {this.state.testDefinitions.map(def => (
                         <TestButton testDef={def}
-                                    onClick={() => this.setState({openTest: def.test_id})}
+                                    onClick={() => {this.setState({openTestIndex: def.test_id}); this.retrieveUserInput()}}
                                     background={'var(--a2u-blue)'}
                                     key={def.test_id}
                         />
@@ -100,7 +113,7 @@ export default class ScriptPage extends Component {
 
                 <div id='test-view' className='layered'>
                     <div className='input-box'>
-                        <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
+                        <h2>{this.state.openTestIndex > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                         {this.loadInput()}
                     </div>
                     <div id='test-run-button'>
@@ -119,15 +132,11 @@ function TestButton({testDef, onClick, background}) {
 
     const beautifyName = (name) => {
         const splitString = name.split('_')
-        console.log(splitString)
 
         let finalName = ''
-        for (let s of splitString) {
-
-            console.log(s.substring(1))
-            finalName = finalName + ' ' +  s.charAt(0).toUpperCase() + s.substring(1)
-            console.log(finalName)
-        }
+        splitString.forEach(string =>
+            finalName = finalName + ' ' +  string.charAt(0).toUpperCase() + string.substring(1)
+        )
 
         return finalName.trimEnd()
     }
@@ -152,19 +161,21 @@ TestButton.propTypes = {
 function TestInput({inputID, defaultValue}) {
     const [booleanInput, setBooleanInput] = useState(false)
 
+    console.log('Input "' + inputID + '" made with value of ' + defaultValue)
+
     let inputElement = (<></>)
     let inputType = typeof defaultValue
 
     switch (inputType) {
         case "string":
             inputElement = (
-                <input className='test-input-box' type='text' defaultValue={defaultValue}/>
+                <input name={inputID} className='test-input-box' type='text' defaultValue={defaultValue}/>
             )
             break;
 
         case "number":
             inputElement = (
-                <input className='test-input-box' type='number' defaultValue={defaultValue}/>
+                <input name={inputID} className='test-input-box' type='number' defaultValue={defaultValue}/>
             )
             break;
 
@@ -173,7 +184,7 @@ function TestInput({inputID, defaultValue}) {
 
             inputElement = (
                 <div className='checkbox-container'>
-                    <input className='test-input-box' type='checkbox' value={booleanInput}/>
+                    <input name={inputID} className='test-input-box' type='checkbox' value={booleanInput}/>
                     <div className='tf-container'>
                         <div className={`boolean-checkbox ${!booleanInput && 'checked'}`} onClick={() => setBooleanInput(false)}>False</div>
                         <div className={`boolean-checkbox ${booleanInput && 'checked'}`} onClick={() => setBooleanInput(true)}>True</div>
