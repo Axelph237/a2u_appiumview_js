@@ -73,22 +73,23 @@ export default class ScriptPage extends Component {
         return data.params
     }
 
-    // Creates input elements as an array
-    loadInput() {
-        this.setState({inputFields: []}, () => {
+    // Updates the currently rendered inputFields
+    renderInput() {
+        // Removes previously rendered input fields, then calls rest of function
+         this.setState({inputFields: []}, () => {
 
-            if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
+             // Maps and prepares render for input fields
+             if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
                 return
 
-            const inputParams = this.getDefinitionInput(this.state.openTest)
+             const inputParams = this.getDefinitionInput(this.state.openTest)
 
-            // inputID is of type String
-            const inputFields = Object.keys(inputParams).map(inputID => (
-                <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
-            ))
+             // inputID is of type String
+             const inputFields = Object.keys(inputParams).map(inputID => (
+                 <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
+             ))
 
-            this.setState({inputFields: inputFields})
-
+             this.setState({inputFields: inputFields})
         })
     }
 
@@ -111,7 +112,7 @@ export default class ScriptPage extends Component {
                 <div id='test-container'>
                     {this.state.testDefinitions.map(def => (
                         <TestButton testDef={def}
-                                    onClick={() => {this.setState({openTest: def.test_id}, () => this.loadInput())}}
+                                    onClick={() => {this.setState({openTest: def.test_id}, () => this.renderInput())}}
                                     background={'var(--a2u-blue)'}
                                     key={def.test_id}
                         />
