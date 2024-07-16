@@ -12,6 +12,7 @@ export default class ScriptPage extends Component {
         this.state = {
             testDefinitions:[],
             containers: [],
+            inputFields: [],
             openTest: -1,
         }
     }
@@ -74,15 +75,21 @@ export default class ScriptPage extends Component {
 
     // Creates input elements as an array
     loadInput() {
-        if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
-            return []
+        this.setState({inputFields: []}, () => {
 
-        const inputParams = this.getDefinitionInput(this.state.openTest)
+            if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
+                return
 
-        // inputID is of type String
-        return Object.keys(inputParams).map(inputID => (
-                    <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
-                ))
+            const inputParams = this.getDefinitionInput(this.state.openTest)
+
+            // inputID is of type String
+            const inputFields = Object.keys(inputParams).map(inputID => (
+                <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
+            ))
+
+            this.setState({inputFields: inputFields})
+
+        })
     }
 
     /*retrieveUserInput() {
@@ -104,7 +111,7 @@ export default class ScriptPage extends Component {
                 <div id='test-container'>
                     {this.state.testDefinitions.map(def => (
                         <TestButton testDef={def}
-                                    onClick={() => this.setState({openTest: def.test_id})}
+                                    onClick={() => {this.setState({openTest: def.test_id}, () => this.loadInput())}}
                                     background={'var(--a2u-blue)'}
                                     key={def.test_id}
                         />
@@ -114,7 +121,7 @@ export default class ScriptPage extends Component {
                 <div id='test-view' className='layered'>
                     <div className='input-box'>
                         <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
-                        {this.loadInput()}
+                        {this.state.inputFields}
                     </div>
                     <div id='test-run-button'>
                         <b>Run Test</b>
