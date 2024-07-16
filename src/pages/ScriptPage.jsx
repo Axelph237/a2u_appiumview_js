@@ -158,13 +158,13 @@ function TestInput({inputID, defaultValue}) {
     switch (inputType) {
         case "string":
             inputElement = (
-                <input className='test-input-box' type='text' defaultValue={defaultValue}/>
+                <input name={inputID} className='test-input-box' type='text' defaultValue={defaultValue}/>
             )
             break;
 
         case "number":
             inputElement = (
-                <input className='test-input-box' type='number' defaultValue={defaultValue}/>
+                <input name={inputID} className='test-input-box' type='number' defaultValue={defaultValue}/>
             )
             break;
 
@@ -173,7 +173,7 @@ function TestInput({inputID, defaultValue}) {
 
             inputElement = (
                 <div className='checkbox-container'>
-                    <input className='test-input-box' type='checkbox' value={booleanInput}/>
+                    <input name={inputID} className='test-input-box' type='checkbox' value={booleanInput}/>
                     <div className='tf-container'>
                         <div className={`boolean-checkbox ${!booleanInput && 'checked'}`} onClick={() => setBooleanInput(false)}>False</div>
                         <div className={`boolean-checkbox ${booleanInput && 'checked'}`} onClick={() => setBooleanInput(true)}>True</div>
