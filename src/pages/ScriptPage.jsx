@@ -55,7 +55,7 @@ export default class ScriptPage extends Component {
             });
     }
 
-    runTest() {
+    runOpenTest() {
         const input = this.retrieveUserInput()
 
         const testDef = this.state.testDefinitions[this.state.openTest]
