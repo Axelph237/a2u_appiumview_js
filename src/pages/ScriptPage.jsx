@@ -85,16 +85,18 @@ export default class ScriptPage extends Component {
                 ))
     }
 
-    retrieveUserInput() {
-        const inputElems = document.getElementsByClassName('test-box-input')
+    /*retrieveUserInput() {
+        const inputElems = document.getElementsByClassName('test-input-box')
 
         let newDefs = this.state.testDefinitions
 
-        for (let e of inputElems)
+        for (let e of inputElems) {
+            console.log(e)
             newDefs[this.state.openTest].params[e.name] = e.value
+        }
 
         return this.setState({ testDefinitions: newDefs })
-    }
+    }*/
 
     render() {
         return (
@@ -118,7 +120,7 @@ export default class ScriptPage extends Component {
                         <b>Run Test</b>
                     </div>
 
-                    <div id='test-run-button' style={{background: 'var(--mint-green)', alignSelf: 'end', justifySelf: 'start', color: 'black'}} onClick={() => {this.retrieveUserInput(); console.log(this.state.testDefinitions)}}>
+                    <div id='test-run-button' style={{background: 'var(--mint-green)', alignSelf: 'end', justifySelf: 'start', color: 'black'}} onClick={() => {console.log(this.state.testDefinitions)}}>
                         <b>Show input</b>
                     </div>
                 </div>
