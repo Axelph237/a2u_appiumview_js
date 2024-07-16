@@ -55,11 +55,11 @@ export default class ScriptPage extends Component {
             });
     }
 
+    // Sends a POST request to the server backend
+    // POST contains the test's data as a json
     runOpenTest() {
         const input = this.retrieveUserInput()
-
         const testDef = this.state.testDefinitions[this.state.openTest]
-
         // merge the user input with the test's definition
         testDef.params = input
 
