@@ -180,12 +180,8 @@ export default class ScriptPage extends Component {
                         <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                         {this.state.inputFields}
                     </div>
-                    <div id='test-run-button' onClick={() => this.runOpenTest()}>
+                    <div id='test-run-button' onClick={() => this.runOpenTest()} style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
                         <b>Run Test</b>
-                    </div>
-
-                    <div id='test-run-button' style={{background: 'var(--mint-green)', alignSelf: 'end', justifySelf: 'start', color: 'black'}} onClick={() => {console.log(this.retrieveUserInput())}}>
-                        <b>{'Aiden\'s Debug Button :)'}</b>
                     </div>
                 </div>
             </div>
