@@ -85,6 +85,17 @@ export default class ScriptPage extends Component {
                 ))
     }
 
+    retrieveUserInput() {
+        const inputElems = document.getElementsByClassName('test-box-input')
+
+        let newDefs = this.state.testDefinitions
+
+        for (let e of inputElems)
+            newDefs[this.state.openTest].params[e.name] = e.value
+
+        return this.setState({ testDefinitions: newDefs })
+    }
+
     render() {
         return (
             <div id='script-page'>
@@ -106,6 +117,10 @@ export default class ScriptPage extends Component {
                     <div id='test-run-button'>
                         <b>Run Test</b>
                     </div>
+
+                    <div id='test-run-button' style={{background: 'var(--mint-green)', alignSelf: 'end', justifySelf: 'start', color: 'black'}} onClick={() => {this.retrieveUserInput(); console.log(this.state.testDefinitions)}}>
+                        <b>Show input</b>
+                    </div>
                 </div>
             </div>
         )
@@ -119,14 +134,11 @@ function TestButton({testDef, onClick, background}) {
 
     const beautifyName = (name) => {
         const splitString = name.split('_')
-        console.log(splitString)
 
         let finalName = ''
         for (let s of splitString) {
 
-            console.log(s.substring(1))
             finalName = finalName + ' ' +  s.charAt(0).toUpperCase() + s.substring(1)
-            console.log(finalName)
         }
 
         return finalName.trimEnd()
