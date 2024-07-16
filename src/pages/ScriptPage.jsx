@@ -29,16 +29,18 @@ export default class ScriptPage extends Component {
         this.getTests()
     }
 
-    // Sends a GET request to the server backend and returns a list of all test definitions
-    getTests() {
+    getHTTPMole() {
         const baseURL = this.props.baseURL != null ? this.props.baseURL : 'http://localhost:8000/appium/'
 
-        const httpMole = axios.create({
+        return axios.create({
             baseURL: baseURL,
             timeout: 50000
         })
+    }
 
-        httpMole.get('tests/', {responseType: 'json'})
+    // Sends a GET request to the server backend and returns a list of all test definitions
+    getTests() {
+        this.getHTTPMole().get('tests/', {responseType: 'json'})
             .then(response => {
                 console.log('Tests retrieved:', response.data);
 
@@ -53,6 +55,27 @@ export default class ScriptPage extends Component {
             });
     }
 
+    runTest() {
+        const input = this.retrieveUserInput()
+
+        const testDef = this.state.testDefinitions[this.state.openTest]
+
+        // merge the user input with the test's definition
+        testDef.params = input
+
+        this.getHTTPMole().post('tests/', testDef)
+            .then(response => {
+
+                console.log('Tests run with following response:', response.data);
+
+            })
+            .catch(error => {
+
+                console.error('Error running Appium test:', error);
+
+            });
+    }
+
     // Returns the testDefinition of the test with the specified ID
     // Otherwise, returns null
     getTestData(testID) {
@@ -64,7 +87,7 @@ export default class ScriptPage extends Component {
 
     // Returns the input parameters of the test with the specified ID
     // Otherwise, returns null
-    getDefinitionInput(testID) {
+    getDefinitionParams(testID) {
         const data = this.getTestData(testID);
 
         if (data == null)
@@ -73,38 +96,37 @@ export default class ScriptPage extends Component {
         return data.params
     }
 
+    retrieveUserInput() {
+        const inputElems = document.getElementsByClassName('test-input-box')
+
+        let input = {}
+
+        for (let e of inputElems) {
+            input[e.name] = e.value
+        }
+
+        return input
+    }
+
     // Updates the currently rendered inputFields
     renderInput() {
         // Removes previously rendered input fields, then calls rest of function
-         this.setState({inputFields: []}, () => {
+        this.setState({inputFields: []}, () => {
 
-             // Maps and prepares render for input fields
-             if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
+            // Maps and prepares render for input fields
+            if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
                 return
 
-             const inputParams = this.getDefinitionInput(this.state.openTest)
+            const inputParams = this.getDefinitionParams(this.state.openTest)
 
-             // inputID is of type String
-             const inputFields = Object.keys(inputParams).map(inputID => (
-                 <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
-             ))
+            // inputID is of type String
+            const inputFields = Object.keys(inputParams).map(inputID => (
+                <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
+            ))
 
-             this.setState({inputFields: inputFields})
+            this.setState({inputFields: inputFields})
         })
     }
-
-    /*retrieveUserInput() {
-        const inputElems = document.getElementsByClassName('test-input-box')
-
-        let newDefs = this.state.testDefinitions
-
-        for (let e of inputElems) {
-            console.log(e)
-            newDefs[this.state.openTest].params[e.name] = e.value
-        }
-
-        return this.setState({ testDefinitions: newDefs })
-    }*/
 
     render() {
         return (
@@ -128,8 +150,8 @@ export default class ScriptPage extends Component {
                         <b>Run Test</b>
                     </div>
 
-                    <div id='test-run-button' style={{background: 'var(--mint-green)', alignSelf: 'end', justifySelf: 'start', color: 'black'}} onClick={() => {console.log(this.state.testDefinitions)}}>
-                        <b>Show input</b>
+                    <div id='test-run-button' style={{background: 'var(--mint-green)', alignSelf: 'end', justifySelf: 'start', color: 'black'}} onClick={() => {console.log(this.retrieveUserInput())}}>
+                        <b>Aiden's Debug Button :)</b>
                     </div>
                 </div>
             </div>
