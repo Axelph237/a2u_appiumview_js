@@ -146,7 +146,7 @@ export default class ScriptPage extends Component {
                         <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                         {this.state.inputFields}
                     </div>
-                    <div id='test-run-button'>
+                    <div id='test-run-button' onClick={() => this.runOpenTest()}>
                         <b>Run Test</b>
                     </div>
 
