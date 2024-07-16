@@ -27,6 +27,7 @@ export default class ScriptPage extends Component {
         });
 
         this.getTests()
+        this.startAppium()
     }
 
     getHTTPMole() {
@@ -36,6 +37,20 @@ export default class ScriptPage extends Component {
             baseURL: baseURL,
             timeout: 50000
         })
+    }
+
+    startAppium() {
+        this.getHTTPMole().get('start_appium/', {responseType: 'json'})
+            .then(response => {
+
+                console.log('Appium started:', response.data);
+
+            })
+            .catch(error => {
+
+                console.error('Error starting Appium:', error);
+
+            });
     }
 
     // Sends a GET request to the server backend and returns a list of all test definitions
@@ -102,10 +117,29 @@ export default class ScriptPage extends Component {
         let input = {}
 
         for (let e of inputElems) {
-            input[e.name] = e.value
+            input[e.name] = this.coerceType(e.value)
         }
 
         return input
+    }
+
+
+    // This function implicitly coerces a string value into a different type
+    // Used for retaining the original type when it may have been lost as a string
+    coerceType(value) {
+        if (value === null || value === undefined) // To null/undefined
+            return value
+
+        if (!isNaN(value) && value.trim() !== '') // To number
+            return Number(value)
+
+        if (value.toLowerCase() === 'true') // To boolean
+            return true
+
+        if (value.toLowerCase() === 'false') // To boolean
+            return false
+
+        return value
     }
 
     // Updates the currently rendered inputFields
@@ -151,7 +185,7 @@ export default class ScriptPage extends Component {
                     </div>
 
                     <div id='test-run-button' style={{background: 'var(--mint-green)', alignSelf: 'end', justifySelf: 'start', color: 'black'}} onClick={() => {console.log(this.retrieveUserInput())}}>
-                        <b>Aiden's Debug Button :)</b>
+                        <b>{'Aiden\'s Debug Button :)'}</b>
                     </div>
                 </div>
             </div>
@@ -214,10 +248,9 @@ function TestInput({inputID, defaultValue}) {
 
             // TODO fix checkbox formatting
         case "boolean":
-
             inputElement = (
                 <div className='checkbox-container'>
-                    <input name={inputID} className='test-input-box' type='checkbox' value={booleanInput}/>
+                    <input name={inputID} className='test-input-box' type='checkbox' value={String(booleanInput)}/>
                     <div className='tf-container'>
                         <div className={`boolean-checkbox ${!booleanInput && 'checked'}`} onClick={() => setBooleanInput(false)}>False</div>
                         <div className={`boolean-checkbox ${booleanInput && 'checked'}`} onClick={() => setBooleanInput(true)}>True</div>
@@ -246,5 +279,5 @@ function TestInput({inputID, defaultValue}) {
 
 TestInput.propTypes = {
     inputID: PropTypes.string.isRequired,
-    defaultValue: PropTypes.string,
+    defaultValue: PropTypes.any,
 }
