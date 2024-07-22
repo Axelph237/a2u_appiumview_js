@@ -156,7 +156,7 @@ export default class ScriptPage extends Component {
 
             // inputID is of type String
             const inputFields = Object.keys(inputParams).map(inputID => (
-                <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
+                <ScriptInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
             ))
 
             this.setState({inputFields: inputFields})
@@ -233,7 +233,7 @@ TestButton.propTypes = {
     background: PropTypes.string.isRequired,
 }
 
-function TestInput({inputID, defaultValue}) {
+function ScriptInput({inputID, defaultValue}) {
     const [booleanInput, setBooleanInput] = useState(false)
 
     let inputElement = (<></>)
@@ -281,7 +281,7 @@ function TestInput({inputID, defaultValue}) {
         </div>
     )
 }
-TestInput.propTypes = {
+ScriptInput.propTypes = {
     inputID: PropTypes.string.isRequired,
     defaultValue: PropTypes.any,
 }
