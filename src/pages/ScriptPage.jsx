@@ -3,6 +3,7 @@ import './ScriptPage.css'
 import {Component, useState} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import ConsoleView from "../components/ConsoleView.jsx";
 
 export default class ScriptPage extends Component {
 
@@ -176,11 +177,15 @@ export default class ScriptPage extends Component {
                 </div>
 
                 <div id='test-view' className='layered'>
-                    <div className='input-box'>
-                        <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
-                        {this.state.inputFields}
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                        <div className='input-box'>
+                            <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
+                            {this.state.inputFields}
+                        </div>
+                        <ConsoleView />
                     </div>
-                    <div id='test-run-button' onClick={() => this.runOpenTest()} style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
+                    <div id='test-run-button' onClick={() => this.runOpenTest()}
+                         style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
                         <b>Run Test</b>
                     </div>
                 </div>
