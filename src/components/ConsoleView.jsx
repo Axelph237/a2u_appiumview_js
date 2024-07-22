@@ -10,8 +10,6 @@ export default class ConsoleView extends Component {
         Hook(window.console, (log) => {
             this.setState(({ logs }) => ({ logs: [...logs, Decode(log)] }))
         })
-
-        console.log(`Hello world!`)
     }
 
     render() {
