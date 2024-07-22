@@ -183,6 +183,7 @@ export default class ScriptPage extends Component {
                             {this.state.inputFields}
                         </div>
                         <ConsoleView />
+                        <SelectFromMenu items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']} />
                     </div>
                     <div id='test-run-button' onClick={() => this.runOpenTest()}
                          style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
@@ -257,8 +258,8 @@ function ScriptInput({inputID, defaultValue}) {
                 <div className='checkbox-container'>
                     <input name={inputID} className='test-input-box' type='checkbox' value={String(booleanInput)}/>
                     <div className='tf-container'>
-                        <div className={`boolean-checkbox ${!booleanInput && 'checked'}`} onClick={() => setBooleanInput(false)}>False</div>
-                        <div className={`boolean-checkbox ${booleanInput && 'checked'}`} onClick={() => setBooleanInput(true)}>True</div>
+                        <div className={`selection-pill ${!booleanInput && 'selected'}`} onClick={() => setBooleanInput(false)}>False</div>
+                        <div className={`selection-pill ${booleanInput && 'selected'}`} onClick={() => setBooleanInput(true)}>True</div>
                     </div>
                 </div>
             )
@@ -284,4 +285,30 @@ function ScriptInput({inputID, defaultValue}) {
 ScriptInput.propTypes = {
     inputID: PropTypes.string.isRequired,
     defaultValue: PropTypes.any,
+}
+
+// TODO finish menu selection by adding dropdown carrot and secondary background
+function SelectFromMenu({items}) {
+    const [selectedIndex, setSelectedIndex] = useState(0)
+
+    const createMenu = () => {
+        let menuItems = []
+
+        for (let i = 0; i < items.length; i++) {
+            menuItems.push((
+                <div className={`selection-pill ${selectedIndex === i && 'selected'}`} onClick={() => setSelectedIndex(i)} style={{margin: '3px 0px'}} key={i}>{items[i]}</div>
+            ))
+        }
+
+        return menuItems
+    }
+
+    return (
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '200px', height: '500px'}}>
+            {createMenu()}
+        </div>
+    )
+}
+SelectFromMenu.propTypes = {
+    items: PropTypes.array.isRequired
 }

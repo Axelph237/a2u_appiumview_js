@@ -204,7 +204,7 @@ input[type="number"]::-webkit-outer-spin-button {
     justify-content: center;
 }
 
-.boolean-checkbox {
+.selection-pill {
     width: 75px;
     height: 20px;
     margin: 0px 3px;
@@ -220,11 +220,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
     cursor: pointer;
 }
-.boolean-checkbox.checked {
+.selection-pill.selected {
     background: var(--dark-purple);
     color: var(--button-color);
 }
-.boolean-checkbox:not(.checked) {
+.selection-pill:not(.selected) {
     background: var(--button-color);
     color: var(--dark-purple);
 }
