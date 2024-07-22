@@ -252,7 +252,6 @@ function TestInput({inputID, defaultValue}) {
             )
             break;
 
-        // TODO fix checkbox formatting
         case "boolean":
             inputElement = (
                 <div className='checkbox-container'>
