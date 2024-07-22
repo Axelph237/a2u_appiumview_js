@@ -4,6 +4,7 @@ import {Component, useState} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import ConsoleView from "../components/ConsoleView.jsx";
+import fitty from "fitty";
 
 export default class ScriptPage extends Component {
 
@@ -198,6 +199,12 @@ ScriptPage.propTypes = {
 }
 
 function TestButton({testDef, onClick, background}) {
+
+    fitty('h1', {
+        maxSize: 20,
+        minSize: 16,
+        multiLine: true,
+    })
 
     const beautifyName = (name) => {
         const splitString = name.split('_')
