@@ -1,8 +1,6 @@
 import './App.css'
 import DraggableComponent from "./components/DraggableComponent.jsx";
-import RequestManager from "./components/RequestManager.jsx";
 import a2uLogo from "./assets/a2u-logo-white-nobg.png"
-import TestContainer from "./components/TestContainer.jsx";
 import ScriptPage from "./pages/ScriptPage.jsx";
 
 function App() {
