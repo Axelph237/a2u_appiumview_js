@@ -11,7 +11,7 @@ export default class ScriptPage extends Component {
         super(props)
 
         this.state = {
-            testDefinitions:[],
+            testDefinitions:[],   // TODO refactor to "scripts"
             containers: [],
             inputFields: [],
             openTest: -1,
@@ -27,10 +27,12 @@ export default class ScriptPage extends Component {
             container.scrollLeft += event.deltaY
         });
 
+        // Get tests from backend and request backend to start Appium
         this.getTests()
         this.startAppium()
     }
 
+    // Creates a new axios instance
     getHTTPMole() {
         const baseURL = this.props.baseURL != null ? this.props.baseURL : 'http://localhost:8000/appium/'
 
@@ -40,6 +42,8 @@ export default class ScriptPage extends Component {
         })
     }
 
+    // Sends a get request to backend to start appium
+    // TODO make this a post request. It should not be a get???
     startAppium() {
         this.getHTTPMole().get('start_appium/', {responseType: 'json'})
             .then(response => {
@@ -54,7 +58,14 @@ export default class ScriptPage extends Component {
             });
     }
 
-    // Sends a GET request to the server backend and returns a list of all test definitions
+    /*  Sends a GET request to the server backend and returns a list of all scripts
+        List is an array of objects with the following fields:
+            file_name: Should never be null, the name of the file without any pathing
+            test_id: A unique numeric id also representing the index of the script in the list
+            definition: May be null, an object containing information on display and input for the script, see
+                backend repo README for further information
+            capabilities: Should never be null for scripts following Appium format. A list of parameters for the Appium client.
+    */
     getTests() {
         this.getHTTPMole().get('tests/', {responseType: 'json'})
             .then(response => {
@@ -73,11 +84,13 @@ export default class ScriptPage extends Component {
 
     // Sends a POST request to the server backend
     // POST contains the test's data as a json
+    // TODO rename "testDef" variable to "script"
     runOpenTest() {
         const input = this.retrieveUserInput()
         const testDef = this.state.testDefinitions[this.state.openTest]
         // merge the user input with the test's definition
-        testDef.params = input
+        if (testDef.definition.parameters !== undefined)
+            testDef.definition.parameters = input
 
         this.getHTTPMole().post('tests/', testDef)
             .then(response => {
@@ -94,24 +107,34 @@ export default class ScriptPage extends Component {
 
     // Returns the testDefinition of the test with the specified ID
     // Otherwise, returns null
-    getTestData(testID) {
+    // TODO rename "testID" to "scriptID"
+    // TODO rename getTest to getScript
+    getTest(testID) {
         if (testID < 0 || testID >= this.state.testDefinitions.length)
-            return null
+            return undefined
 
         return this.state.testDefinitions[testID]
     }
 
     // Returns the input parameters of the test with the specified ID
     // Otherwise, returns null
+    // TODO rename "data" to "script"
     getDefinitionParams(testID) {
-        const data = this.getTestData(testID);
+        const data = this.getTest(testID);
 
-        if (data == null)
+        if (data === undefined)
             return data
 
-        return data.params
+        // Definition will always be set either to an object or null whereas the
+        // parameters field may be missing entirely
+        if (data.definition == null || data.definition.parameters === undefined)
+            return undefined
+
+        return data.definition.parameters
     }
 
+    // Collects the input data from all available input boxes
+    // Returns an object containing each input name and its value
     retrieveUserInput() {
         const inputElems = document.getElementsByClassName('test-input-box')
 
@@ -123,7 +146,6 @@ export default class ScriptPage extends Component {
 
         return input
     }
-
 
     // This function implicitly coerces a string value into a different type
     // Used for retaining the original type when it may have been lost as a string
@@ -153,6 +175,9 @@ export default class ScriptPage extends Component {
                 return
 
             const inputParams = this.getDefinitionParams(this.state.openTest)
+
+            if (inputParams === undefined)
+                return
 
             // inputID is of type String
             const inputFields = Object.keys(inputParams).map(inputID => (
@@ -198,6 +223,8 @@ ScriptPage.propTypes = {
     baseURL: PropTypes.string.isRequired,
 }
 
+// TODO refactor TestButton to clearer name
+// TODO refactor "testDef" to "script"
 function TestButton({testDef, onClick, background}) {
 
     fitty('h1', {
@@ -218,11 +245,12 @@ function TestButton({testDef, onClick, background}) {
         return finalName.trimEnd()
     }
 
+    // TODO add logic for using the "script_name" field of the "definition" if available before using "file_name"
     return (
         <div className='test-button' style={{background: background}} onClick={onClick}>
             <h1>{beautifyName(testDef.file_name)}</h1>
             <div className='test-info-box'>
-                <p>{'Parameter count: ' + Object.keys(testDef.params).length}</p>
+                {testDef.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(testDef.params).length}</p>)}
                 <p>{testDef.file_name}</p>
             </div>
         </div>
