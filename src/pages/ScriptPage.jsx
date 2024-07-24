@@ -88,7 +88,7 @@ export default class ScriptPage extends Component {
         const input = this.retrieveUserInput()
         const script = this.state.scripts[this.state.activeScript]
         // merge the user input with the test's definition
-        if (script.definition.parameters != undefined)
+        if (script?.definition?.parameters != undefined)
             script.definition.parameters = input
 
         this.getHTTPMole().post('scripts/', script)
@@ -123,7 +123,7 @@ export default class ScriptPage extends Component {
 
         // Definition will always be set either to an object or null whereas the
         // parameters field may be missing entirely
-        if (script.definition == null || script.definition.parameters == undefined)
+        if (script?.definition?.parameters == undefined)
             return undefined
 
         return script.definition.parameters
