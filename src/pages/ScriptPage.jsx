@@ -11,10 +11,10 @@ export default class ScriptPage extends Component {
         super(props)
 
         this.state = {
-            testDefinitions:[],   // TODO refactor to "scripts"
+            scripts:[],
             containers: [],
             inputFields: [],
-            openTest: -1,
+            openTest: -1,   // TODO refactor openTest to activeScript
         }
     }
 
@@ -74,7 +74,7 @@ export default class ScriptPage extends Component {
                 if (response.data == null)
                     return
 
-                this.setState({testDefinitions: response.data})
+                this.setState({scripts: response.data})
             })
             .catch(error => {
                 console.error('Error reading Appium test requirements:', error);
@@ -87,12 +87,13 @@ export default class ScriptPage extends Component {
     // TODO rename "testDef" variable to "script"
     runOpenTest() {
         const input = this.retrieveUserInput()
-        const testDef = this.state.testDefinitions[this.state.openTest]
+        const script = this.state.scripts[this.state.openTest]
         // merge the user input with the test's definition
-        if (testDef.definition.parameters !== undefined)
-            testDef.definition.parameters = input
+        if (script.definition.parameters !== undefined)
+            script.definition.parameters = input
 
-        this.getHTTPMole().post('tests/', testDef)
+        // TODO Update post url when backend view changes
+        this.getHTTPMole().post('tests/', script)
             .then(response => {
 
                 console.log('Tests run with following response:', response.data);
@@ -107,30 +108,27 @@ export default class ScriptPage extends Component {
 
     // Returns the testDefinition of the test with the specified ID
     // Otherwise, returns null
-    // TODO rename "testID" to "scriptID"
-    // TODO rename getTest to getScript
-    getTest(testID) {
-        if (testID < 0 || testID >= this.state.testDefinitions.length)
+    getScript(scriptID) {
+        if (scriptID < 0 || scriptID >= this.state.scripts.length)
             return undefined
 
-        return this.state.testDefinitions[testID]
+        return this.state.scripts[scriptID]
     }
 
     // Returns the input parameters of the test with the specified ID
     // Otherwise, returns null
-    // TODO rename "data" to "script"
     getDefinitionParams(testID) {
-        const data = this.getTest(testID);
+        const script = this.getScript(testID);
 
-        if (data === undefined)
-            return data
+        if (script === undefined)
+            return script
 
         // Definition will always be set either to an object or null whereas the
         // parameters field may be missing entirely
-        if (data.definition == null || data.definition.parameters === undefined)
+        if (script.definition == null || script.definition.parameters === undefined)
             return undefined
 
-        return data.definition.parameters
+        return script.definition.parameters
     }
 
     // Collects the input data from all available input boxes
@@ -171,7 +169,7 @@ export default class ScriptPage extends Component {
         this.setState({inputFields: []}, () => {
 
             // Maps and prepares render for input fields
-            if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
+            if (this.state.openTest < 0 || this.state.openTest > this.state.scripts.length)
                 return
 
             const inputParams = this.getDefinitionParams(this.state.openTest)
@@ -188,12 +186,13 @@ export default class ScriptPage extends Component {
         })
     }
 
+    // TODO refactor test_id to script_id when backend updates
     render() {
         return (
             <div id='script-page'>
                 <div id='test-container'>
-                    {this.state.testDefinitions.map(def => (
-                        <TestButton testDef={def}
+                    {this.state.scripts.map(def => (
+                        <ScriptContainer script={def}
                                     onClick={() => {this.setState({openTest: def.test_id}, () => this.renderInput())}}
                                     background={'var(--a2u-blue)'}
                                     key={def.test_id}
@@ -223,9 +222,7 @@ ScriptPage.propTypes = {
     baseURL: PropTypes.string.isRequired,
 }
 
-// TODO refactor TestButton to clearer name
-// TODO refactor "testDef" to "script"
-function TestButton({testDef, onClick, background}) {
+function ScriptContainer({script, onClick, background}) {
 
     fitty('h1', {
         maxSize: 20,
@@ -248,16 +245,16 @@ function TestButton({testDef, onClick, background}) {
     // TODO add logic for using the "script_name" field of the "definition" if available before using "file_name"
     return (
         <div className='test-button' style={{background: background}} onClick={onClick}>
-            <h1>{beautifyName(testDef.file_name)}</h1>
+            <h1>{beautifyName(script.file_name)}</h1>
             <div className='test-info-box'>
-                {testDef.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(testDef.params).length}</p>)}
-                <p>{testDef.file_name}</p>
+                {script.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(script.params).length}</p>)}
+                <p>{script.file_name}</p>
             </div>
         </div>
     )
 }
-TestButton.propTypes = {
-    testDef: PropTypes.object.isRequired,
+ScriptContainer.propTypes = {
+    script: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     background: PropTypes.string.isRequired,
 }
