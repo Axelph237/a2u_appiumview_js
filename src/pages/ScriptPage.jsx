@@ -61,7 +61,7 @@ export default class ScriptPage extends Component {
     /*  Sends a GET request to the server backend and returns a list of all scripts
         List is an array of objects with the following fields:
             file_name: Should never be null, the name of the file without any pathing
-            test_id: A unique numeric id also representing the index of the script in the list
+            script_id: A unique numeric id also representing the index of the script in the list
             definition: May be null, an object containing information on display and input for the script, see
                 backend repo README for further information
             capabilities: Should never be null for scripts following Appium format. A list of parameters for the Appium client.
@@ -185,16 +185,15 @@ export default class ScriptPage extends Component {
         })
     }
 
-    // TODO refactor test_id to script_id when backend updates
     render() {
         return (
             <div id='script-page'>
                 <div id='test-container'>
                     {this.state.scripts.map(def => (
                         <ScriptContainer script={def}
-                                    onClick={() => {this.setState({activeScript: def.test_id}, () => this.renderInput())}}
+                                    onClick={() => {this.setState({activeScript: def.script_id}, () => this.renderInput())}}
                                     background={'var(--a2u-blue)'}
-                                    key={def.test_id}
+                                    key={def.script_id}
                         />
                     ))}
                 </div>
@@ -246,7 +245,7 @@ function ScriptContainer({script, onClick, background}) {
         <div className='test-button' style={{background: background}} onClick={onClick}>
             <h1>{beautifyName(script.file_name)}</h1>
             <div className='test-info-box'>
-                {script.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(script.params).length}</p>)}
+                {script.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>)}
                 <p>{script.file_name}</p>
             </div>
         </div>
