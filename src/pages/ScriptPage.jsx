@@ -11,10 +11,10 @@ export default class ScriptPage extends Component {
         super(props)
 
         this.state = {
-            testDefinitions:[],   // TODO refactor to "scripts"
+            scripts:[],
             containers: [],
             inputFields: [],
-            openTest: -1,
+            activeScript: -1,
         }
     }
 
@@ -61,20 +61,20 @@ export default class ScriptPage extends Component {
     /*  Sends a GET request to the server backend and returns a list of all scripts
         List is an array of objects with the following fields:
             file_name: Should never be null, the name of the file without any pathing
-            test_id: A unique numeric id also representing the index of the script in the list
+            script_id: A unique numeric id also representing the index of the script in the list
             definition: May be null, an object containing information on display and input for the script, see
                 backend repo README for further information
             capabilities: Should never be null for scripts following Appium format. A list of parameters for the Appium client.
     */
     getTests() {
-        this.getHTTPMole().get('tests/', {responseType: 'json'})
+        this.getHTTPMole().get('scripts/', {responseType: 'json'})
             .then(response => {
                 console.log('Tests retrieved:', response.data);
 
                 if (response.data == null)
                     return
 
-                this.setState({testDefinitions: response.data})
+                this.setState({scripts: response.data})
             })
             .catch(error => {
                 console.error('Error reading Appium test requirements:', error);
@@ -84,15 +84,14 @@ export default class ScriptPage extends Component {
 
     // Sends a POST request to the server backend
     // POST contains the test's data as a json
-    // TODO rename "testDef" variable to "script"
-    runOpenTest() {
+    runActiveScript() {
         const input = this.retrieveUserInput()
-        const testDef = this.state.testDefinitions[this.state.openTest]
+        const script = this.state.scripts[this.state.activeScript]
         // merge the user input with the test's definition
-        if (testDef.definition.parameters !== undefined)
-            testDef.definition.parameters = input
+        if (script.definition.parameters != undefined)
+            script.definition.parameters = input
 
-        this.getHTTPMole().post('tests/', testDef)
+        this.getHTTPMole().post('scripts/', script)
             .then(response => {
 
                 console.log('Tests run with following response:', response.data);
@@ -107,30 +106,27 @@ export default class ScriptPage extends Component {
 
     // Returns the testDefinition of the test with the specified ID
     // Otherwise, returns null
-    // TODO rename "testID" to "scriptID"
-    // TODO rename getTest to getScript
-    getTest(testID) {
-        if (testID < 0 || testID >= this.state.testDefinitions.length)
+    getScript(scriptID) {
+        if (scriptID < 0 || scriptID >= this.state.scripts.length)
             return undefined
 
-        return this.state.testDefinitions[testID]
+        return this.state.scripts[scriptID]
     }
 
     // Returns the input parameters of the test with the specified ID
     // Otherwise, returns null
-    // TODO rename "data" to "script"
     getDefinitionParams(testID) {
-        const data = this.getTest(testID);
+        const script = this.getScript(testID);
 
-        if (data === undefined)
-            return data
+        if (script === undefined)
+            return script
 
         // Definition will always be set either to an object or null whereas the
         // parameters field may be missing entirely
-        if (data.definition == null || data.definition.parameters === undefined)
+        if (script.definition == null || script.definition.parameters == undefined)
             return undefined
 
-        return data.definition.parameters
+        return script.definition.parameters
     }
 
     // Collects the input data from all available input boxes
@@ -171,12 +167,12 @@ export default class ScriptPage extends Component {
         this.setState({inputFields: []}, () => {
 
             // Maps and prepares render for input fields
-            if (this.state.openTest < 0 || this.state.openTest > this.state.testDefinitions.length)
+            if (this.state.activeScript < 0 || this.state.activeScript > this.state.scripts.length)
                 return
 
-            const inputParams = this.getDefinitionParams(this.state.openTest)
+            const inputParams = this.getDefinitionParams(this.state.activeScript)
 
-            if (inputParams === undefined)
+            if (inputParams == undefined)
                 return
 
             // inputID is of type String
@@ -192,11 +188,11 @@ export default class ScriptPage extends Component {
         return (
             <div id='script-page'>
                 <div id='test-container'>
-                    {this.state.testDefinitions.map(def => (
-                        <TestButton testDef={def}
-                                    onClick={() => {this.setState({openTest: def.test_id}, () => this.renderInput())}}
+                    {this.state.scripts.map(def => (
+                        <ScriptContainer script={def}
+                                    onClick={() => {this.setState({activeScript: def.script_id}, () => this.renderInput())}}
                                     background={'var(--a2u-blue)'}
-                                    key={def.test_id}
+                                    key={def.script_id}
                         />
                     ))}
                 </div>
@@ -204,14 +200,14 @@ export default class ScriptPage extends Component {
                 <div id='test-view' className='layered'>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <div className='input-box'>
-                            <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
+                            <h2>{this.state.activeScript > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                             {this.state.inputFields}
                         </div>
                         <ConsoleView />
                         <SelectFromMenu items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']} />
                     </div>
-                    <div id='test-run-button' onClick={() => this.runOpenTest()}
-                         style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
+                    <div id='test-run-button' onClick={() => this.runActiveScript()}
+                         style={{visibility: this.state.activeScript >= 0 ? 'visible' : 'hidden'}}>
                         <b>Run Test</b>
                     </div>
                 </div>
@@ -223,9 +219,7 @@ ScriptPage.propTypes = {
     baseURL: PropTypes.string.isRequired,
 }
 
-// TODO refactor TestButton to clearer name
-// TODO refactor "testDef" to "script"
-function TestButton({testDef, onClick, background}) {
+function ScriptContainer({script, onClick, background}) {
 
     fitty('h1', {
         maxSize: 20,
@@ -248,16 +242,21 @@ function TestButton({testDef, onClick, background}) {
     // TODO add logic for using the "script_name" field of the "definition" if available before using "file_name"
     return (
         <div className='test-button' style={{background: background}} onClick={onClick}>
-            <h1>{beautifyName(testDef.file_name)}</h1>
+            <h1>{beautifyName(script.file_name)}</h1>
             <div className='test-info-box'>
-                {testDef.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(testDef.params).length}</p>)}
-                <p>{testDef.file_name}</p>
+                {/*{script?.definition?.parameters != undefined && (<p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>)}*/}
+                {
+                    script?.definition?.parameters ? (
+                        <p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>
+                    ) : null
+                }
+                <p>{script.file_name}</p>
             </div>
         </div>
     )
 }
-TestButton.propTypes = {
-    testDef: PropTypes.object.isRequired,
+ScriptContainer.propTypes = {
+    script: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     background: PropTypes.string.isRequired,
 }
