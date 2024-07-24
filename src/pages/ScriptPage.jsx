@@ -91,7 +91,6 @@ export default class ScriptPage extends Component {
         if (script.definition.parameters !== undefined)
             script.definition.parameters = input
 
-        // TODO Update post url when backend view changes
         this.getHTTPMole().post('scripts/', script)
             .then(response => {
 
