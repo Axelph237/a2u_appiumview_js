@@ -88,7 +88,7 @@ export default class ScriptPage extends Component {
         const input = this.retrieveUserInput()
         const script = this.state.scripts[this.state.activeScript]
         // merge the user input with the test's definition
-        if (script.definition.parameters !== undefined)
+        if (script.definition.parameters != undefined)
             script.definition.parameters = input
 
         this.getHTTPMole().post('scripts/', script)
@@ -123,7 +123,7 @@ export default class ScriptPage extends Component {
 
         // Definition will always be set either to an object or null whereas the
         // parameters field may be missing entirely
-        if (script.definition == null || script.definition.parameters === undefined)
+        if (script.definition == null || script.definition.parameters == undefined)
             return undefined
 
         return script.definition.parameters
@@ -172,7 +172,7 @@ export default class ScriptPage extends Component {
 
             const inputParams = this.getDefinitionParams(this.state.activeScript)
 
-            if (inputParams === undefined)
+            if (inputParams == undefined)
                 return
 
             // inputID is of type String
@@ -244,7 +244,7 @@ function ScriptContainer({script, onClick, background}) {
         <div className='test-button' style={{background: background}} onClick={onClick}>
             <h1>{beautifyName(script.file_name)}</h1>
             <div className='test-info-box'>
-                {script.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>)}
+                {script.definition.parameters != undefined && (<p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>)}
                 <p>{script.file_name}</p>
             </div>
         </div>
