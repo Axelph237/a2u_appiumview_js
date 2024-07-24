@@ -14,7 +14,7 @@ export default class ScriptPage extends Component {
             scripts:[],
             containers: [],
             inputFields: [],
-            openTest: -1,   // TODO refactor openTest to activeScript
+            activeScript: -1,
         }
     }
 
@@ -84,10 +84,9 @@ export default class ScriptPage extends Component {
 
     // Sends a POST request to the server backend
     // POST contains the test's data as a json
-    // TODO rename "testDef" variable to "script"
-    runOpenTest() {
+    runActiveScript() {
         const input = this.retrieveUserInput()
-        const script = this.state.scripts[this.state.openTest]
+        const script = this.state.scripts[this.state.activeScript]
         // merge the user input with the test's definition
         if (script.definition.parameters !== undefined)
             script.definition.parameters = input
@@ -169,10 +168,10 @@ export default class ScriptPage extends Component {
         this.setState({inputFields: []}, () => {
 
             // Maps and prepares render for input fields
-            if (this.state.openTest < 0 || this.state.openTest > this.state.scripts.length)
+            if (this.state.activeScript < 0 || this.state.activeScript > this.state.scripts.length)
                 return
 
-            const inputParams = this.getDefinitionParams(this.state.openTest)
+            const inputParams = this.getDefinitionParams(this.state.activeScript)
 
             if (inputParams === undefined)
                 return
@@ -193,7 +192,7 @@ export default class ScriptPage extends Component {
                 <div id='test-container'>
                     {this.state.scripts.map(def => (
                         <ScriptContainer script={def}
-                                    onClick={() => {this.setState({openTest: def.test_id}, () => this.renderInput())}}
+                                    onClick={() => {this.setState({activeScript: def.test_id}, () => this.renderInput())}}
                                     background={'var(--a2u-blue)'}
                                     key={def.test_id}
                         />
@@ -203,14 +202,14 @@ export default class ScriptPage extends Component {
                 <div id='test-view' className='layered'>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <div className='input-box'>
-                            <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
+                            <h2>{this.state.activeScript > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                             {this.state.inputFields}
                         </div>
                         <ConsoleView />
                         <SelectFromMenu items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']} />
                     </div>
-                    <div id='test-run-button' onClick={() => this.runOpenTest()}
-                         style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
+                    <div id='test-run-button' onClick={() => this.runActiveScript()}
+                         style={{visibility: this.state.activeScript >= 0 ? 'visible' : 'hidden'}}>
                         <b>Run Test</b>
                     </div>
                 </div>
