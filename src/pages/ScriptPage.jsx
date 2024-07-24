@@ -67,7 +67,7 @@ export default class ScriptPage extends Component {
             capabilities: Should never be null for scripts following Appium format. A list of parameters for the Appium client.
     */
     getTests() {
-        this.getHTTPMole().get('tests/', {responseType: 'json'})
+        this.getHTTPMole().get('scripts/', {responseType: 'json'})
             .then(response => {
                 console.log('Tests retrieved:', response.data);
 
@@ -92,7 +92,7 @@ export default class ScriptPage extends Component {
             script.definition.parameters = input
 
         // TODO Update post url when backend view changes
-        this.getHTTPMole().post('tests/', script)
+        this.getHTTPMole().post('scripts/', script)
             .then(response => {
 
                 console.log('Tests run with following response:', response.data);
