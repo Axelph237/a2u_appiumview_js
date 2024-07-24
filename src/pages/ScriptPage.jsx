@@ -1,8 +1,9 @@
 import './ScriptPage.css'
-
 import {Component, useState} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import ConsoleView from "../components/ConsoleView.jsx";
+import fitty from "fitty";
 
 export default class ScriptPage extends Component {
 
@@ -10,7 +11,7 @@ export default class ScriptPage extends Component {
         super(props)
 
         this.state = {
-            testDefinitions:[],
+            testDefinitions:[],   // TODO refactor to "scripts"
             containers: [],
             inputFields: [],
             openTest: -1,
@@ -26,10 +27,12 @@ export default class ScriptPage extends Component {
             container.scrollLeft += event.deltaY
         });
 
+        // Get tests from backend and request backend to start Appium
         this.getTests()
         this.startAppium()
     }
 
+    // Creates a new axios instance
     getHTTPMole() {
         const baseURL = this.props.baseURL != null ? this.props.baseURL : 'http://localhost:8000/appium/'
 
@@ -39,6 +42,8 @@ export default class ScriptPage extends Component {
         })
     }
 
+    // Sends a get request to backend to start appium
+    // TODO make this a post request. It should not be a get???
     startAppium() {
         this.getHTTPMole().get('start_appium/', {responseType: 'json'})
             .then(response => {
@@ -53,7 +58,14 @@ export default class ScriptPage extends Component {
             });
     }
 
-    // Sends a GET request to the server backend and returns a list of all test definitions
+    /*  Sends a GET request to the server backend and returns a list of all scripts
+        List is an array of objects with the following fields:
+            file_name: Should never be null, the name of the file without any pathing
+            test_id: A unique numeric id also representing the index of the script in the list
+            definition: May be null, an object containing information on display and input for the script, see
+                backend repo README for further information
+            capabilities: Should never be null for scripts following Appium format. A list of parameters for the Appium client.
+    */
     getTests() {
         this.getHTTPMole().get('tests/', {responseType: 'json'})
             .then(response => {
@@ -72,11 +84,13 @@ export default class ScriptPage extends Component {
 
     // Sends a POST request to the server backend
     // POST contains the test's data as a json
+    // TODO rename "testDef" variable to "script"
     runOpenTest() {
         const input = this.retrieveUserInput()
         const testDef = this.state.testDefinitions[this.state.openTest]
         // merge the user input with the test's definition
-        testDef.params = input
+        if (testDef.definition.parameters !== undefined)
+            testDef.definition.parameters = input
 
         this.getHTTPMole().post('tests/', testDef)
             .then(response => {
@@ -93,24 +107,34 @@ export default class ScriptPage extends Component {
 
     // Returns the testDefinition of the test with the specified ID
     // Otherwise, returns null
-    getTestData(testID) {
+    // TODO rename "testID" to "scriptID"
+    // TODO rename getTest to getScript
+    getTest(testID) {
         if (testID < 0 || testID >= this.state.testDefinitions.length)
-            return null
+            return undefined
 
         return this.state.testDefinitions[testID]
     }
 
     // Returns the input parameters of the test with the specified ID
     // Otherwise, returns null
+    // TODO rename "data" to "script"
     getDefinitionParams(testID) {
-        const data = this.getTestData(testID);
+        const data = this.getTest(testID);
 
-        if (data == null)
+        if (data === undefined)
             return data
 
-        return data.params
+        // Definition will always be set either to an object or null whereas the
+        // parameters field may be missing entirely
+        if (data.definition == null || data.definition.parameters === undefined)
+            return undefined
+
+        return data.definition.parameters
     }
 
+    // Collects the input data from all available input boxes
+    // Returns an object containing each input name and its value
     retrieveUserInput() {
         const inputElems = document.getElementsByClassName('test-input-box')
 
@@ -122,7 +146,6 @@ export default class ScriptPage extends Component {
 
         return input
     }
-
 
     // This function implicitly coerces a string value into a different type
     // Used for retaining the original type when it may have been lost as a string
@@ -153,9 +176,12 @@ export default class ScriptPage extends Component {
 
             const inputParams = this.getDefinitionParams(this.state.openTest)
 
+            if (inputParams === undefined)
+                return
+
             // inputID is of type String
             const inputFields = Object.keys(inputParams).map(inputID => (
-                <TestInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
+                <ScriptInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
             ))
 
             this.setState({inputFields: inputFields})
@@ -176,11 +202,16 @@ export default class ScriptPage extends Component {
                 </div>
 
                 <div id='test-view' className='layered'>
-                    <div className='input-box'>
-                        <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
-                        {this.state.inputFields}
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                        <div className='input-box'>
+                            <h2>{this.state.openTest > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
+                            {this.state.inputFields}
+                        </div>
+                        <ConsoleView />
+                        <SelectFromMenu items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']} />
                     </div>
-                    <div id='test-run-button' onClick={() => this.runOpenTest()} style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
+                    <div id='test-run-button' onClick={() => this.runOpenTest()}
+                         style={{visibility: this.state.openTest >= 0 ? 'visible' : 'hidden'}}>
                         <b>Run Test</b>
                     </div>
                 </div>
@@ -192,7 +223,15 @@ ScriptPage.propTypes = {
     baseURL: PropTypes.string.isRequired,
 }
 
+// TODO refactor TestButton to clearer name
+// TODO refactor "testDef" to "script"
 function TestButton({testDef, onClick, background}) {
+
+    fitty('h1', {
+        maxSize: 20,
+        minSize: 16,
+        multiLine: true,
+    })
 
     const beautifyName = (name) => {
         const splitString = name.split('_')
@@ -206,24 +245,24 @@ function TestButton({testDef, onClick, background}) {
         return finalName.trimEnd()
     }
 
+    // TODO add logic for using the "script_name" field of the "definition" if available before using "file_name"
     return (
         <div className='test-button' style={{background: background}} onClick={onClick}>
             <h1>{beautifyName(testDef.file_name)}</h1>
             <div className='test-info-box'>
-                <p>{'Parameter count: ' + Object.keys(testDef.params).length}</p>
+                {testDef.definition.parameters !== undefined && (<p>{'Parameter count: ' + Object.keys(testDef.params).length}</p>)}
                 <p>{testDef.file_name}</p>
             </div>
         </div>
     )
 }
-
 TestButton.propTypes = {
     testDef: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     background: PropTypes.string.isRequired,
 }
 
-function TestInput({inputID, defaultValue}) {
+function ScriptInput({inputID, defaultValue}) {
     const [booleanInput, setBooleanInput] = useState(false)
 
     let inputElement = (<></>)
@@ -242,14 +281,13 @@ function TestInput({inputID, defaultValue}) {
             )
             break;
 
-            // TODO fix checkbox formatting
         case "boolean":
             inputElement = (
                 <div className='checkbox-container'>
                     <input name={inputID} className='test-input-box' type='checkbox' value={String(booleanInput)}/>
                     <div className='tf-container'>
-                        <div className={`boolean-checkbox ${!booleanInput && 'checked'}`} onClick={() => setBooleanInput(false)}>False</div>
-                        <div className={`boolean-checkbox ${booleanInput && 'checked'}`} onClick={() => setBooleanInput(true)}>True</div>
+                        <div className={`selection-pill ${!booleanInput && 'selected'}`} onClick={() => setBooleanInput(false)}>False</div>
+                        <div className={`selection-pill ${booleanInput && 'selected'}`} onClick={() => setBooleanInput(true)}>True</div>
                     </div>
                 </div>
             )
@@ -272,8 +310,33 @@ function TestInput({inputID, defaultValue}) {
         </div>
     )
 }
-
-TestInput.propTypes = {
+ScriptInput.propTypes = {
     inputID: PropTypes.string.isRequired,
     defaultValue: PropTypes.any,
+}
+
+// TODO finish menu selection by adding dropdown carrot and secondary background
+function SelectFromMenu({items}) {
+    const [selectedIndex, setSelectedIndex] = useState(0)
+
+    const createMenu = () => {
+        let menuItems = []
+
+        for (let i = 0; i < items.length; i++) {
+            menuItems.push((
+                <div className={`selection-pill ${selectedIndex === i && 'selected'}`} onClick={() => setSelectedIndex(i)} style={{margin: '3px 0px'}} key={i}>{items[i]}</div>
+            ))
+        }
+
+        return menuItems
+    }
+
+    return (
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '200px', height: '500px'}}>
+            {createMenu()}
+        </div>
+    )
+}
+SelectFromMenu.propTypes = {
+    items: PropTypes.array.isRequired
 }
