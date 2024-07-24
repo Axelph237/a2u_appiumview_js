@@ -244,7 +244,12 @@ function ScriptContainer({script, onClick, background}) {
         <div className='test-button' style={{background: background}} onClick={onClick}>
             <h1>{beautifyName(script.file_name)}</h1>
             <div className='test-info-box'>
-                {script.definition.parameters != undefined && (<p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>)}
+                {/*{script?.definition?.parameters != undefined && (<p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>)}*/}
+                {
+                    script?.definition?.parameters ? (
+                        <p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>
+                    ) : null
+                }
                 <p>{script.file_name}</p>
             </div>
         </div>
