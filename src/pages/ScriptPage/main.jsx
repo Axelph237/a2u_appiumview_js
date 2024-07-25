@@ -15,7 +15,7 @@ export default class ScriptPage extends Component {
         this.state = {
             scripts:[],
             inputFields: [],
-            activeScript: -1,
+            activeScriptID: -1,
         }
     }
 
@@ -87,7 +87,7 @@ export default class ScriptPage extends Component {
     // POST contains the test's data as a json
     runActiveScript() {
         const input = this.retrieveUserInput()
-        const script = this.state.scripts[this.state.activeScript]
+        const script = this.state.scripts[this.state.activeScriptID]
         // merge the user input with the test's definition
         if (script?.definition?.parameters != undefined)
             script.definition.parameters = input
@@ -143,14 +143,14 @@ export default class ScriptPage extends Component {
                 <div id='script-menu'>
                     {this.state.scripts.map(def => (
                         <ScriptContainer script={def}
-                                    onClick={() => {this.setState({activeScript: def.script_id})}}
+                                    onClick={() => {this.setState({activeScriptID: def.script_id})}}
                                     background={'var(--a2u-blue)'}
                                     key={def.script_id}
                         />
                     ))}
                 </div>
 
-                <ScriptView scripts={this.state.scripts} activeScriptID={this.state.activeScript} runFunc={() => this.runActiveScript()} />
+                <ScriptView scripts={this.state.scripts} activeScriptID={this.state.activeScriptID} runFunc={() => this.runActiveScript()} />
             </div>
         )
     }
