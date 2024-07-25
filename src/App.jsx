@@ -11,7 +11,7 @@ function App() {
             <div id='page-layout'>
                 <div id='sidebar'>
                     <img src={a2uLogo} alt='a2uLogo' width='100'/>
-                    <h1 style={{fontSize: '25px', textAlign: 'center'}}>Test.IT</h1>
+                    <h1 style={{fontSize: '25px', textAlign: 'center'}}>Checks2U</h1>
                 </div>
 
                 <div id='open-page'>
