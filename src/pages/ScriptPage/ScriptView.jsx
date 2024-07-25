@@ -48,6 +48,13 @@ export default class ScriptView extends Component {
         return script.definition.parameters
     }
 
+    getScriptLabel(script) {
+        if (script?.definition?.script_name !== undefined)
+            return script.definition.script_name
+
+        return script.file_name
+    }
+
     // Updates the currently rendered inputFields
     renderInput() {
         // Removes previously rendered input fields, then calls rest of function
@@ -75,7 +82,7 @@ export default class ScriptView extends Component {
                     <div className='input-menu'>
                         {this.state.activeScript !== undefined ?
                             (<>
-                                <h2>{this.state.activeScript.file_name}</h2>
+                                <h2>{this.getScriptLabel(this.state.activeScript)}</h2>
                                 <h2>Test Parameters:</h2>
                             </>)
                             : (<h2>Click test to view parameters.</h2>)

@@ -25,7 +25,7 @@ export default function ScriptContainer({script, onClick, background}) {
     // TODO add logic for using the "script_name" field of the "definition" if available before using "file_name"
     return (
         <div className='script-container' style={{background: background}} onClick={onClick}>
-            <h1>{beautifyName(script.file_name)}</h1>
+            <h1>{script?.definition?.script_name !== undefined ? script.definition.script_name : beautifyName(script.file_name)}</h1>
             <div className='script-info-box'>
                 {
                     script?.definition?.parameters ? (
