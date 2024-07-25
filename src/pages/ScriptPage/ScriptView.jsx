@@ -1,6 +1,7 @@
 import {Component} from "react";
 import PropTypes from "prop-types";
 import ScriptInput, {SelectFromMenu} from "./ScriptInput.jsx";
+import './ScriptView.css'
 
 export default class ScriptView extends Component {
 
