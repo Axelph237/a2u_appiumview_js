@@ -6,6 +6,7 @@ import ConsoleView from "../../components/ConsoleView.jsx";
 
 import ScriptContainer from "./ScriptContainer.jsx";
 import ScriptInput, {SelectFromMenu} from "./ScriptInput.jsx";
+import ScriptView from "./ScriptView.jsx";
 
 export default class ScriptPage extends Component {
 
@@ -105,31 +106,6 @@ export default class ScriptPage extends Component {
             });
     }
 
-    // Returns the testDefinition of the test with the specified ID
-    // Otherwise, returns null
-    getScript(scriptID) {
-        if (scriptID < 0 || scriptID >= this.state.scripts.length)
-            return undefined
-
-        return this.state.scripts[scriptID]
-    }
-
-    // Returns the input parameters of the test with the specified ID
-    // Otherwise, returns null
-    getDefinitionParams(testID) {
-        const script = this.getScript(testID);
-
-        if (script === undefined)
-            return script
-
-        // Definition will always be set either to an object or null whereas the
-        // parameters field may be missing entirely
-        if (script?.definition?.parameters == undefined)
-            return undefined
-
-        return script.definition.parameters
-    }
-
     // Collects the input data from all available input boxes
     // Returns an object containing each input name and its value
     retrieveUserInput() {
@@ -162,56 +138,20 @@ export default class ScriptPage extends Component {
         return value
     }
 
-    // Updates the currently rendered inputFields
-    renderInput() {
-        // Removes previously rendered input fields, then calls rest of function
-        this.setState({inputFields: []}, () => {
-
-            // Maps and prepares render for input fields
-            if (this.state.activeScript < 0 || this.state.activeScript > this.state.scripts.length)
-                return
-
-            const inputParams = this.getDefinitionParams(this.state.activeScript)
-
-            if (inputParams == undefined)
-                return
-
-            // inputID is of type String
-            const inputFields = Object.keys(inputParams).map(inputID => (
-                <ScriptInput inputID={inputID} key={inputID} defaultValue={inputParams[inputID]} />
-            ))
-
-            this.setState({inputFields: inputFields})
-        })
-    }
-
     render() {
         return (
             <div id='script-page'>
                 <div id='script-menu'>
                     {this.state.scripts.map(def => (
                         <ScriptContainer script={def}
-                                    onClick={() => {this.setState({activeScript: def.script_id}, () => this.renderInput())}}
+                                    onClick={() => {this.setState({activeScript: def.script_id})}}
                                     background={'var(--a2u-blue)'}
                                     key={def.script_id}
                         />
                     ))}
                 </div>
 
-                <div id='script-view' className='layered'>
-                    <div style={{display: 'flex', flexDirection: 'row'}}>
-                        <div className='input-menu'>
-                            <h2>{this.state.activeScript > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
-                            {this.state.inputFields}
-                        </div>
-                        {/*<ConsoleView />*/}
-                        <SelectFromMenu items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']} />
-                    </div>
-                    <div id='script-run-button' onClick={() => this.runActiveScript()}
-                         style={{visibility: this.state.activeScript >= 0 ? 'visible' : 'hidden'}}>
-                        <b>Run Test</b>
-                    </div>
-                </div>
+                <ScriptView scripts={this.state.scripts} activeScript={this.state.activeScript} runFunc={() => this.runActiveScript()} />
             </div>
         )
     }
