@@ -20,7 +20,7 @@ export default class ScriptPage extends Component {
 
     componentDidMount() {
         // Enabling horizontal scrolling for test container
-        const container = document.querySelector('#test-container');
+        const container = document.querySelector('#script-menu');
 
         container.addEventListener('wheel', (event) => {
             event.preventDefault()
@@ -132,7 +132,7 @@ export default class ScriptPage extends Component {
     // Collects the input data from all available input boxes
     // Returns an object containing each input name and its value
     retrieveUserInput() {
-        const inputElems = document.getElementsByClassName('test-input-box')
+        const inputElems = document.getElementsByClassName('script-input')
 
         let input = {}
 
@@ -187,7 +187,7 @@ export default class ScriptPage extends Component {
     render() {
         return (
             <div id='script-page'>
-                <div id='test-container'>
+                <div id='script-menu'>
                     {this.state.scripts.map(def => (
                         <ScriptContainer script={def}
                                     onClick={() => {this.setState({activeScript: def.script_id}, () => this.renderInput())}}
@@ -197,16 +197,16 @@ export default class ScriptPage extends Component {
                     ))}
                 </div>
 
-                <div id='test-view' className='layered'>
+                <div id='script-view' className='layered'>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
-                        <div className='input-box'>
+                        <div className='input-menu'>
                             <h2>{this.state.activeScript > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                             {this.state.inputFields}
                         </div>
                         <ConsoleView />
                         <SelectFromMenu items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']} />
                     </div>
-                    <div id='test-run-button' onClick={() => this.runActiveScript()}
+                    <div id='script-run-button' onClick={() => this.runActiveScript()}
                          style={{visibility: this.state.activeScript >= 0 ? 'visible' : 'hidden'}}>
                         <b>Run Test</b>
                     </div>
@@ -241,9 +241,9 @@ function ScriptContainer({script, onClick, background}) {
 
     // TODO add logic for using the "script_name" field of the "definition" if available before using "file_name"
     return (
-        <div className='test-button' style={{background: background}} onClick={onClick}>
+        <div className='script-container' style={{background: background}} onClick={onClick}>
             <h1>{beautifyName(script.file_name)}</h1>
-            <div className='test-info-box'>
+            <div className='script-info-box'>
                 {
                     script?.definition?.parameters ? (
                         <p>{'Parameter count: ' + Object.keys(script.definition.parameters).length}</p>
@@ -269,20 +269,20 @@ function ScriptInput({inputID, defaultValue}) {
     switch (inputType) {
         case "string":
             inputElement = (
-                <input name={inputID} className='test-input-box' type='text' defaultValue={defaultValue}/>
+                <input name={inputID} className='script-input' type='text' defaultValue={defaultValue}/>
             )
             break;
 
         case "number":
             inputElement = (
-                <input name={inputID} className='test-input-box' type='number' defaultValue={defaultValue}/>
+                <input name={inputID} className='script-input' type='number' defaultValue={defaultValue}/>
             )
             break;
 
         case "boolean":
             inputElement = (
                 <div className='checkbox-container'>
-                    <input name={inputID} className='test-input-box' type='checkbox' value={String(booleanInput)}/>
+                    <input name={inputID} className='script-input' type='checkbox' value={String(booleanInput)}/>
                     <div className='tf-container'>
                         <div className={`selection-pill ${!booleanInput && 'selected'}`} onClick={() => setBooleanInput(false)}>False</div>
                         <div className={`selection-pill ${booleanInput && 'selected'}`} onClick={() => setBooleanInput(true)}>True</div>
