@@ -1,0 +1,15 @@
+#script-menu {
+    height: 150px;
+
+    grid-column: 1 / span 4;
+    align-self: center;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+
+    overflow: hidden;
+    overflow-x: auto;
+
+    background: transparent;
+}

@@ -6,6 +6,7 @@ import ConsoleView from "../../components/ConsoleView.jsx";
 
 import ScriptContainer from "./ScriptContainer.jsx";
 import ScriptView from "./ScriptView.jsx";
+import ScriptMenu from "./ScriptMenu.jsx";
 
 export default class ScriptPage extends Component {
 
@@ -139,16 +140,7 @@ export default class ScriptPage extends Component {
     render() {
         return (
             <div id='script-page'>
-                <div id='script-menu'>
-                    {this.state.scripts.map(def => (
-                        <ScriptContainer script={def}
-                                    onClick={() => {this.setState({activeScriptID: def.script_id})}}
-                                    background={'var(--a2u-blue)'}
-                                    key={def.script_id}
-                        />
-                    ))}
-                </div>
-
+                <ScriptMenu scripts={this.state.scripts} setActiveScript={(scriptID) => this.setState({activeScriptID: scriptID})} />
                 <ScriptView scripts={this.state.scripts} activeScriptID={this.state.activeScriptID} runFunc={() => this.runActiveScript()} />
             </div>
         )
