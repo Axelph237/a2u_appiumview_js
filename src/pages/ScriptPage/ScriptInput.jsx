@@ -1,5 +1,6 @@
 import {useState} from "react";
 import PropTypes from "prop-types";
+import './ScriptInput.css'
 
 export default function ScriptInput({inputID, defaultValue}) {
     const [booleanInput, setBooleanInput] = useState(false)

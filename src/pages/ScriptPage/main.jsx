@@ -1,4 +1,4 @@
-import './ScriptPage.css'
+import './main.css'
 import {Component} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -205,7 +205,7 @@ export default class ScriptPage extends Component {
                             <h2>{this.state.activeScript > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
                             {this.state.inputFields}
                         </div>
-                        <ConsoleView />
+                        {/*<ConsoleView />*/}
                         <SelectFromMenu items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']} />
                     </div>
                     <div id='script-run-button' onClick={() => this.runActiveScript()}

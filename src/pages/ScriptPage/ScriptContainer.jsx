@@ -1,5 +1,6 @@
 import fitty from "fitty";
 import PropTypes from "prop-types";
+import './ScriptContainer.css'
 
 export default function ScriptContainer({script, onClick, background}) {
 
