@@ -5,7 +5,6 @@ import axios from "axios";
 import ConsoleView from "../../components/ConsoleView.jsx";
 
 import ScriptContainer from "./ScriptContainer.jsx";
-import ScriptInput, {SelectFromMenu} from "./ScriptInput.jsx";
 import ScriptView from "./ScriptView.jsx";
 
 export default class ScriptPage extends Component {
