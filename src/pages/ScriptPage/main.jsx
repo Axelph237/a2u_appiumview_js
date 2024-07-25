@@ -14,7 +14,6 @@ export default class ScriptPage extends Component {
 
         this.state = {
             scripts:[],
-            inputFields: [],
             activeScriptID: -1,
         }
     }
