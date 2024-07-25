@@ -84,7 +84,7 @@ export default class ScriptView extends Component {
                             (<>
                                 <h2>{this.getScriptLabel(this.state.activeScript)}</h2>
                                 <p>{this.state.activeScript?.definition?.description}</p>
-                                <h3>Test Parameters:</h3>
+                                {this.state.activeScript?.definition?.parameters && <h3>Test Parameters:</h3>}
                             </>)
                             : (<h2>Click test to view parameters.</h2>)
                         }
