@@ -33,6 +33,10 @@ export default function ScriptInput({inputID, defaultValue}) {
             )
             break;
 
+        case "dropdown":
+
+            break;
+
         case "object":
             console.log(defaultValue + " is type Object!")
             break;
@@ -72,11 +76,15 @@ export function SelectFromMenu({items}) {
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '200px', height: '500px'}}>
-            {createMenu()}
+        <div className='layered'>
+            <div className='dropdown-carrot'></div>
+            <div className='dropdown-item-container'>
+                {createMenu()}
+            </div>
         </div>
     )
 }
+
 SelectFromMenu.propTypes = {
     items: PropTypes.array.isRequired
 }

@@ -83,8 +83,8 @@ export default class ScriptView extends Component {
                         {this.state.inputFields}
                     </div>
                     {/*<ConsoleView />*/}
-                    <SelectFromMenu
-                        items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']}/>
+                    {/*<SelectFromMenu*/}
+                    {/*    items={['item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', ]}/>*/}
                 </div>
                 <div id='script-run-button' onClick={this.props.runFunc}
                      style={{visibility: this.state.activeScript !== undefined ? 'visible' : 'hidden'}}>
