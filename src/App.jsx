@@ -1,5 +1,4 @@
 import './App.css'
-import DraggableComponent from "./components/DraggableComponent.jsx";
 import a2uLogo from "./assets/a2u-logo-white-nobg.png"
 import ScriptPage from "./pages/ScriptPage/main.jsx";
 
