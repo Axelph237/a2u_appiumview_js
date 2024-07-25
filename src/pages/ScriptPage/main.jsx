@@ -1,9 +1,11 @@
 import './ScriptPage.css'
-import {Component, useState} from "react";
+import {Component} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import ConsoleView from "../components/ConsoleView.jsx";
-import fitty from "fitty";
+import ConsoleView from "../../components/ConsoleView.jsx";
+
+import ScriptContainer from "./ScriptContainer.jsx";
+import ScriptInput, {SelectFromMenu} from "./ScriptInput.jsx";
 
 export default class ScriptPage extends Component {
 
@@ -219,7 +221,7 @@ ScriptPage.propTypes = {
     baseURL: PropTypes.string.isRequired,
 }
 
-function ScriptContainer({script, onClick, background}) {
+/*function ScriptContainer({script, onClick, background}) {
 
     fitty('h1', {
         maxSize: 20,
@@ -337,4 +339,4 @@ function SelectFromMenu({items}) {
 }
 SelectFromMenu.propTypes = {
     items: PropTypes.array.isRequired
-}
+}*/
