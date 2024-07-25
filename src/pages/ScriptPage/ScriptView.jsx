@@ -83,7 +83,8 @@ export default class ScriptView extends Component {
                         {this.state.activeScript !== undefined ?
                             (<>
                                 <h2>{this.getScriptLabel(this.state.activeScript)}</h2>
-                                <h2>Test Parameters:</h2>
+                                <p>{this.state.activeScript?.definition?.description}</p>
+                                <h3>Test Parameters:</h3>
                             </>)
                             : (<h2>Click test to view parameters.</h2>)
                         }
