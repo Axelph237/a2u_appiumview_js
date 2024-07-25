@@ -150,7 +150,7 @@ export default class ScriptPage extends Component {
                     ))}
                 </div>
 
-                <ScriptView scripts={this.state.scripts} activeScript={this.state.activeScript} runFunc={() => this.runActiveScript()} />
+                <ScriptView scripts={this.state.scripts} activeScriptID={this.state.activeScript} runFunc={() => this.runActiveScript()} />
             </div>
         )
     }

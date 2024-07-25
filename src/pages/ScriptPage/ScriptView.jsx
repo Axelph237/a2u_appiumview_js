@@ -10,18 +10,20 @@ export default class ScriptView extends Component {
 
         this.state = {
             scripts: this.props.scripts,
-            activeScript: this.props.activeScript,
+            activeScript: this.getScript(this.props.activeScriptID),
             inputFields: [],
         }
     }
 
+    // Updates state based on prop changes
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.scripts !== this.props.scripts) {
             this.setState({scripts: this.props.scripts});
         }
 
-        if (prevProps.activeScript !== this.props.activeScript) {
-            this.setState({activeScript: this.props.activeScript}, () => this.renderInput());
+        if (prevProps.activeScriptID !== this.props.activeScriptID) {
+            this.setState({activeScript: this.getScript(this.props.activeScriptID)},
+                () => this.renderInput());
         }
     }
 
@@ -34,15 +36,13 @@ export default class ScriptView extends Component {
         return this.state.scripts[scriptID]
     }
 
-    // Returns the input parameters of the test with the specified ID
+    // Returns the input parameters of the test
     // Otherwise, returns undefined
-    getDefinitionParams(testID) {
-        const script = this.getScript(testID);
-
+    getDefinitionParams(script) {
         if (script === undefined)
             return script
 
-        if (script?.definition?.parameters == undefined)
+        if (script?.definition?.parameters === undefined)
             return undefined
 
         return script.definition.parameters
@@ -54,12 +54,9 @@ export default class ScriptView extends Component {
         this.setState({inputFields: []}, () => {
 
             // Maps and prepares render for input fields
-            if (this.state.activeScript < 0 || this.state.activeScript > this.state.scripts.length)
-                return
-
             const inputParams = this.getDefinitionParams(this.state.activeScript)
 
-            if (inputParams == undefined)
+            if (inputParams === undefined)
                 return
 
             // inputID is of type String
@@ -76,7 +73,13 @@ export default class ScriptView extends Component {
             <div id='script-view' className='layered'>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     <div className='input-menu'>
-                        <h2>{this.state.activeScript > -1 ? 'Test Parameters' : 'Click test to view parameters.'}</h2>
+                        {this.state.activeScript !== undefined ?
+                            (<>
+                                <h2>{this.state.activeScript.file_name}</h2>
+                                <h2>Test Parameters:</h2>
+                            </>)
+                            : (<h2>Click test to view parameters.</h2>)
+                        }
                         {this.state.inputFields}
                     </div>
                     {/*<ConsoleView />*/}
@@ -84,7 +87,7 @@ export default class ScriptView extends Component {
                         items={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9']}/>
                 </div>
                 <div id='script-run-button' onClick={this.props.runFunc}
-                     style={{visibility: this.state.activeScript >= 0 ? 'visible' : 'hidden'}}>
+                     style={{visibility: this.state.activeScript !== undefined ? 'visible' : 'hidden'}}>
                     <b>Run Test</b>
                 </div>
             </div>
@@ -93,6 +96,6 @@ export default class ScriptView extends Component {
 }
 ScriptView.propTypes = {
     scripts: PropTypes.array.isRequired,
-    activeScript: PropTypes.number.isRequired,
+    activeScriptID: PropTypes.number.isRequired,
     runFunc: PropTypes.func.isRequired,
 }
