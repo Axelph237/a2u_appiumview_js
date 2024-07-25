@@ -1,24 +1,20 @@
-import {Component} from "react";
 import ScriptContainer from "./ScriptContainer.jsx";
 import PropTypes from "prop-types";
+import './ScriptMenu.css'
 
-export default class ScriptMenu extends Component {
+export default function ScriptMenu({scripts, setActiveScript}) {
 
-    render() {
-        return (
+    return (
             <div id='script-menu'>
-                {this.props.scripts.map(def => (
+                {scripts.map(def => (
                     <ScriptContainer script={def}
-                                     onClick={() => {
-                                         this.props.setActiveScript(def.script_id)
-                                     }}
+                                     onClick={() => {setActiveScript(def.script_id)}}
                                      background={'var(--a2u-blue)'}
                                      key={def.script_id}
                     />
                 ))}
             </div>
         )
-    }
 }
 ScriptMenu.propTypes = {
     setActiveScript: PropTypes.func.isRequired,
