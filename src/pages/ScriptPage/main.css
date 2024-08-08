@@ -13,23 +13,91 @@
     grid-row: 6;
 }
 
+/*#script-run-button {*/
+/*    width: 130px;*/
+/*    min-width: 130px;*/
+/*    height: 75px;*/
+
+/*    border-radius: 10px;*/
+/*    margin: 10px;*/
+
+/*    background: var(--a2u-blue);*/
+/*    color: white;*/
+
+/*    align-self: center;*/
+/*    justify-self: end;*/
+
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+
+/*    cursor: pointer;*/
+/*}*/
+
+
+
 #script-run-button {
-    width: 130px;
-    min-width: 130px;
-    height: 75px;
-
-    border-radius: 10px;
-    margin: 10px;
-
-    background: var(--a2u-blue);
-    color: white;
-
-    align-self: center;
+    display: grid;
     justify-self: end;
+    justify-content: center;
+    align-items: center;
 
-    display: flex;
+    width: 40px;
+    height: 40px;
+    margin: 30px;
+    border-radius: 20px;
+
+    background-color: var(--a2u-blue);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+#script-run-button:not(:hover)::after {
+    left: 2px;
+    position: relative;
+
+    width: 30px;
+    height: 30px;
+
+    display: inline-block;
     align-items: center;
     justify-content: center;
 
+    content: '';
+    background-image: url("../../assets/play.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#script-run-button:hover {
+    width: 120px;
+
     cursor: pointer;
+    background: var(--federal-blue);
+
+    animation: 50ms open-text linear;
+}
+
+#script-run-button:hover::after {
+    content: 'Run Script';
+    font-weight: bold;
+
+    animation: 50ms text-zoom-to-fit linear;
+}
+
+@keyframes open-text {
+    from {
+        width: 40px;
+    }
+    to {
+        width: 120px;
+    }
+}
+
+@keyframes text-zoom-to-fit {
+    from {
+        font-size: 0;
+    }
+    to {
+        font-size: 16px;
+    }
 }

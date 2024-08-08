@@ -37,7 +37,7 @@
     cursor: pointer;
     background: var(--federal-blue);
 
-    animation: 50ms open-file-upload linear;
+    animation: 50ms open-text linear;
 }
 
 .custom-script-label:hover::after {
@@ -45,22 +45,4 @@
     font-weight: bold;
 
     animation: 50ms text-zoom-to-fit linear;
-}
-
-@keyframes open-file-upload {
-    from {
-        width: 40px;
-    }
-    to {
-        width: 120px;
-    }
-}
-
-@keyframes text-zoom-to-fit {
-    from {
-        font-size: 0;
-    }
-    to {
-        font-size: 16px;
-    }
 }

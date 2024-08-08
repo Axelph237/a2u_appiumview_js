@@ -150,10 +150,7 @@ export default class ScriptPage extends Component {
                 <div id='options-container' className='layered'>
                     <FileUpload uploadURL='http://localhost:3000/api/scripts/upload/'/>
 
-                    <div id='script-run-button' onClick={this.runActiveScript}
-                         style={{visibility: this.state.activeScriptID >= 0 ? 'visible' : 'hidden'}}>
-                        <b>Run Test</b>
-                    </div>
+                    <div id='script-run-button' onClick={this.runActiveScript} style={{visibility: this.state.activeScriptID >= 0 ? 'visible' : 'hidden'}}></div>
                 </div>
             </div>
         )
