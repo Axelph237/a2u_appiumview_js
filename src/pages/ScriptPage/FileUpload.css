@@ -22,7 +22,7 @@
     display: inline-block;
     width: 40px;
     height: 40px;
-    background-image: url("../assets/plus.svg");
+    background-image: url("../../assets/plus.svg");
     background-size: contain;
     background-repeat: no-repeat;
 }
