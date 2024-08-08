@@ -92,7 +92,7 @@ export default class ScriptPage extends Component {
         if (script?.definition?.parameters != undefined)
             script.definition.parameters = input
 
-        this.getHTTPMole().post('scripts/', script)
+        this.getHTTPMole().post('scripts/run/', script)
             .then(response => {
 
                 console.log('Tests run with following response:', response.data);
