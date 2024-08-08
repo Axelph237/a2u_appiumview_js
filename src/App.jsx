@@ -9,9 +9,17 @@ function App() {
     return (
         <>
             <div id='page-layout'>
-                <div id='sidebar'>
-                    <img src={a2uLogo} alt='a2uLogo' width='100'/>
-                    <h1 style={{fontSize: '25px', textAlign: 'center'}}>Checks2U</h1>
+                <div id='sidebar' className='layered'>
+                    <div style={{alignSelf: "start", display: "flex", flexDirection: "column", justifyContent: "center"}}>
+                        <img src={a2uLogo} alt='a2uLogo' width='100'/>
+                        <h1 style={{fontSize: '25px', textAlign: 'center'}}>Checks2U</h1>
+                    </div>
+
+                    <div style={{alignSelf: "end"}}>
+                        <input type="file" id="scriptUpload" className="custom-script-input"/>
+                        <label htmlFor="scriptUpload" className="custom-script-label">
+                        </label>
+                    </div>
                 </div>
 
                 <div id='open-page'>
