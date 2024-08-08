@@ -13,19 +13,13 @@ export default function FileUpload({uploadURL}) {
             const uploadData = new FormData();
 
             for (let file of fileInput.files) {
-                console.log('Uploading file: ')
-                console.log(file)
-                uploadData.append('file', file);
 
-                // if (file instanceof File) {
-                //     formData.append(file.name, file);
-                // } else {
-                //     alert('Error reading file: ' + file.name);
-                // }
+                if (file instanceof File) {
+                    uploadData.append(file.name, file);
+                } else {
+                    alert('Error reading file: ' + file.name);
+                }
             }
-
-            console.log('Sending data:')
-            console.log(uploadData.getAll('file'))
 
             axios.post(uploadURL, uploadData, {
                 headers: {
@@ -36,7 +30,7 @@ export default function FileUpload({uploadURL}) {
                     console.log(`Upload Progress: ${percentCompleted}%`);
                 }
             }).then(() => {
-                alert('Files uploaded successfully.')
+                console.log('Files uploaded successfully.')
             }).catch(() => {
                 alert('There was an error uploading your files. Please try again.')
             })
