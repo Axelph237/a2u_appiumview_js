@@ -46,7 +46,7 @@ export default class ScriptPage extends Component {
     // Sends a get request to backend to start appium
     // TODO make this a post request. It should not be a get???
     startAppium() {
-        this.getHTTPMole().get('start_appium/', {responseType: 'json'})
+        this.getHTTPMole().post('appium/run')
             .then(response => {
 
                 console.log('Appium started:', response.data);
