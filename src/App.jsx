@@ -1,6 +1,7 @@
 import './App.css'
 import a2uLogo from "./assets/a2u-logo-white-nobg.png"
 import ScriptPage from "./pages/ScriptPage/main.jsx";
+import FileUpload from "./components/FileUpload.jsx";
 
 function App() {
     const defaultURL = "localhost:4723/"
@@ -16,9 +17,7 @@ function App() {
                     </div>
 
                     <div style={{alignSelf: "end"}}>
-                        <input type="file" id="scriptUpload" className="custom-script-input"/>
-                        <label htmlFor="scriptUpload" className="custom-script-label">
-                        </label>
+                        <FileUpload uploadURL='http://localhost:3000/api/scripts/upload/'/>
                     </div>
                 </div>
 
