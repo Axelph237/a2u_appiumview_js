@@ -9,27 +9,6 @@
     color: var(--dark-purple);
 }
 
-#script-run-button {
-    width: 130px;
-    min-width: 130px;
-    height: 75px;
-
-    border-radius: 10px;
-    margin: 10px;
-
-    background: var(--a2u-blue);
-    color: white;
-
-    align-self: end;
-    justify-self: end;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-}
-
 .input-menu {
     display: flex;
     flex-direction: column;

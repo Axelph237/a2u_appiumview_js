@@ -7,6 +7,7 @@ import ConsoleView from "../../components/ConsoleView.jsx";
 import ScriptContainer from "./ScriptContainer.jsx";
 import ScriptView from "./ScriptView.jsx";
 import ScriptMenu from "./ScriptMenu.jsx";
+import FileUpload from "./FileUpload.jsx";
 
 export default class ScriptPage extends Component {
 
@@ -140,8 +141,20 @@ export default class ScriptPage extends Component {
     render() {
         return (
             <div id='script-page'>
-                <ScriptMenu scripts={this.state.scripts} setActiveScript={(scriptID) => this.setState({activeScriptID: scriptID})} />
-                <ScriptView scripts={this.state.scripts} activeScriptID={this.state.activeScriptID} runFunc={() => this.runActiveScript()} />
+                <ScriptMenu scripts={this.state.scripts}
+                            setActiveScript={(scriptID) => this.setState({activeScriptID: scriptID})}/>
+
+
+                <ScriptView scripts={this.state.scripts} activeScriptID={this.state.activeScriptID}/>
+
+                <div id='options-container' className='layered'>
+                    <FileUpload uploadURL='http://localhost:3000/api/scripts/upload/'/>
+
+                    <div id='script-run-button' onClick={this.runActiveScript}
+                         style={{visibility: this.state.activeScriptID >= 0 ? 'visible' : 'hidden'}}>
+                        <b>Run Test</b>
+                    </div>
+                </div>
             </div>
         )
     }

@@ -38,10 +38,10 @@ export default function FileUpload({uploadURL}) {
     }, []);
 
     return (
-        <>
+        <div className='upload-container'>
             <input type="file" id="scriptUpload" className="custom-script-input" accept=".js" multiple="multiple"/>
             <label htmlFor="scriptUpload" className="custom-script-label"></label>
-        </>
+        </div>
     )
 }
 FileUpload.propTypes = {

@@ -7,3 +7,29 @@
 
     color: white;
 }
+
+#options-container {
+    grid-column: 1 / span 4;
+    grid-row: 6;
+}
+
+#script-run-button {
+    width: 130px;
+    min-width: 130px;
+    height: 75px;
+
+    border-radius: 10px;
+    margin: 10px;
+
+    background: var(--a2u-blue);
+    color: white;
+
+    align-self: center;
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}

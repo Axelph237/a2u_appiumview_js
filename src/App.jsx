@@ -1,7 +1,7 @@
 import './App.css'
 import a2uLogo from "./assets/a2u-logo-white-nobg.png"
 import ScriptPage from "./pages/ScriptPage/main.jsx";
-import FileUpload from "./components/FileUpload.jsx";
+import FileUpload from "./pages/ScriptPage/FileUpload.jsx";
 
 function App() {
     const defaultURL = "localhost:4723/"
@@ -14,10 +14,6 @@ function App() {
                     <div style={{alignSelf: "start", display: "flex", flexDirection: "column", justifyContent: "center"}}>
                         <img src={a2uLogo} alt='a2uLogo' width='100'/>
                         <h1 style={{fontSize: '25px', textAlign: 'center'}}>Checks2U</h1>
-                    </div>
-
-                    <div style={{alignSelf: "end"}}>
-                        <FileUpload uploadURL='http://localhost:3000/api/scripts/upload/'/>
                     </div>
                 </div>
 

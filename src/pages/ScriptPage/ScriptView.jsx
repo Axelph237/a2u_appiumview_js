@@ -94,10 +94,6 @@ export default class ScriptView extends Component {
                     {/*<SelectFromMenu*/}
                     {/*    items={['item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', 'item', ]}/>*/}
                 </div>
-                <div id='script-run-button' onClick={this.props.runFunc}
-                     style={{visibility: this.state.activeScript !== undefined ? 'visible' : 'hidden'}}>
-                    <b>Run Test</b>
-                </div>
             </div>
         )
     }
@@ -105,5 +101,4 @@ export default class ScriptView extends Component {
 ScriptView.propTypes = {
     scripts: PropTypes.array.isRequired,
     activeScriptID: PropTypes.number.isRequired,
-    runFunc: PropTypes.func.isRequired,
 }
